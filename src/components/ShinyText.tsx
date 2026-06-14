@@ -8,6 +8,7 @@ interface ShinyTextProps {
   className?: string;
   color?: string;
   shineColor?: string;
+  shineMidColor?: string;
   spread?: number;
   yoyo?: boolean;
   pauseOnHover?: boolean;
@@ -22,6 +23,7 @@ const ShinyText: React.FC<ShinyTextProps> = ({
   className = '',
   color = '#b5b5b5',
   shineColor = '#ffffff',
+  shineMidColor,
   spread = 120,
   yoyo = false,
   pauseOnHover = false,
@@ -108,8 +110,10 @@ const ShinyText: React.FC<ShinyTextProps> = ({
     if (pauseOnHover) setIsPaused(false);
   }, [pauseOnHover]);
 
+  const mid = shineMidColor ?? shineColor;
+
   const gradientStyle: React.CSSProperties = {
-    backgroundImage: `linear-gradient(${spread}deg, ${color} 0%, ${color} 35%, ${shineColor} 50%, ${color} 65%, ${color} 100%)`,
+    backgroundImage: `linear-gradient(${spread}deg, ${color} 0%, ${color} 28%, ${mid} 42%, ${shineColor} 50%, ${mid} 58%, ${color} 72%, ${color} 100%)`,
     backgroundSize: '200% auto',
     WebkitBackgroundClip: 'text',
     backgroundClip: 'text',

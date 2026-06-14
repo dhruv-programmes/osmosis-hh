@@ -33,21 +33,26 @@ export default function App() {
         />
       </div>
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none">
+        <div
+          className="absolute size-72 rounded-full bg-[#f6f3ec]/[0.04] blur-3xl md:size-96"
+          aria-hidden
+        />
         <h1
-          className={`transition-all duration-700 ${pop ? "scale-110 opacity-100" : "scale-95 opacity-0"}`}
+          className={`relative transition-all duration-700 ${pop ? "scale-100 opacity-100" : "scale-[0.97] opacity-0"}`}
         >
           <ShinyText
             text="Osmosis-hh"
-            speed={2}
-            delay={0}
-            color="#b5b5b5"
-            shineColor="#ffffff"
-            spread={120}
+            speed={3}
+            delay={0.5}
+            color="#ddd8cc"
+            shineMidColor="#e8d4a8"
+            shineColor="#fffef8"
+            spread={105}
             direction="left"
             yoyo={false}
             pauseOnHover={false}
             disabled={false}
-            className="text-7xl font-black font-sans tracking-wide text-center select-none drop-shadow-[0_4px_32px_rgba(0,0,0,0.8)] md:text-9xl"
+            className="premium-title font-heading text-center select-none"
           />
         </h1>
       </div>

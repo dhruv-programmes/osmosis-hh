@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @source "../index.html";
 @source "../src/**/*.{ts,tsx,js,jsx}";
+@import url("https://api.fontshare.com/v2/css?f[]=gambarino@400&display=swap");
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
@@ -9,7 +10,8 @@
 @custom-variant dark (&);
 
 @theme inline {
-    --font-heading: var(--font-sans);
+    --font-gambarino: Gambarino, "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --font-heading: var(--font-gambarino);
     --font-sans: 'Inter Variable', sans-serif;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
@@ -100,4 +102,18 @@
   #root {
     @apply min-h-screen bg-background;
     }
+}
+
+.premium-title {
+  font-size: clamp(3rem, 7vw, 4.75rem);
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  -webkit-text-stroke: 1.25px rgb(246 243 236 / 22%);
+  paint-order: stroke fill;
+  filter:
+    drop-shadow(0 1px 0 rgb(0 0 0 / 55%))
+    drop-shadow(0 8px 32px rgb(0 0 0 / 45%))
+    drop-shadow(0 0 48px rgb(246 243 236 / 10%))
+    drop-shadow(0 0 1px rgb(255 255 255 / 35%));
 }
