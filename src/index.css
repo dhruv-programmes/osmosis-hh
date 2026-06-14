@@ -131,17 +131,9 @@
     font-family: var(--font-heading);
   }
 
-  /* Hero — visible by default; GSAP animates in via from() */
+  /* Hero */
   .hero-bg {
     background: linear-gradient(180deg, #0a1208 0%, #080809 100%);
-  }
-
-  .hero-line--display {
-    font-size: var(--text-display);
-  }
-
-  .hero-line--sub {
-    font-size: var(--text-display-sub);
   }
 }
 

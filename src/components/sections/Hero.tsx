@@ -2,6 +2,7 @@ import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
 import GlassButton from "../GlassButton";
 import Grainient from "../Grainient";
+import { MorphingText } from "@/components/ui/morphing-text";
 import { heroGrainient } from "../grainientConfig";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
@@ -9,79 +10,74 @@ export default function Hero() {
   const containerRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
-  const lineRefs = useRef<Array<HTMLSpanElement | null>>([]);
-  const metaRef = useRef<HTMLParagraphElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
-      const lines = lineRefs.current.filter(Boolean) as HTMLSpanElement[];
-      const meta = metaRef.current;
+      const title = titleRef.current;
       const cta = ctaRef.current;
       const bg = bgRef.current;
 
-      const revealAll = () => {
-        gsap.set([...lines, meta, cta, bg], {
-          clearProps: "transform,opacity,filter",
-          opacity: 1,
-          y: 0,
-          yPercent: 0,
-          scale: 1,
-        });
-      };
+      if (!title || !cta || !bg) return;
 
       const reducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)",
       ).matches;
 
-      if (reducedMotion) {
-        revealAll();
-        return;
-      }
+      if (reducedMotion) return;
 
-      const fallback = window.setTimeout(revealAll, 2500);
+      const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
 
-      const tl = gsap.timeline({
-        defaults: { ease: "power4.out" },
-        onComplete: () => {
-          window.clearTimeout(fallback);
-          revealAll();
-        },
-      });
-
-      tl.from(bg, { opacity: 0, duration: 1.4, ease: "power2.out" }, 0)
-        .from(lines, { yPercent: 110, duration: 1.1, stagger: 0.12 }, 0.15)
-        .from(meta, { opacity: 0, y: 16, duration: 0.8 }, 0.55)
-        .from(cta, { opacity: 0, y: 20, scale: 0.94, duration: 0.7 }, 0.75);
+      tl.fromTo(
+        bg,
+        { opacity: 0 },
+        { opacity: 1, duration: 1.1, ease: "power2.out" },
+        0,
+      )
+        .fromTo(
+          title,
+          { opacity: 0, y: 12 },
+          { opacity: 1, y: 0, duration: 0.9 },
+          0.4,
+        )
+        .fromTo(
+          cta,
+          { opacity: 0, y: 8 },
+          { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" },
+          0.75,
+        );
 
       ScrollTrigger.matchMedia({
         "(min-width: 768px)": () => {
           gsap.to(contentRef.current, {
-            y: -60,
+            y: -36,
             opacity: 0,
+            ease: "none",
             scrollTrigger: {
               trigger: containerRef.current,
               start: "top top",
-              end: "60% top",
-              scrub: 1,
+              end: "65% top",
+              scrub: 1.2,
             },
           });
         },
         "(max-width: 767px)": () => {
           gsap.to(contentRef.current, {
-            y: -24,
-            opacity: 0.35,
+            y: -20,
+            opacity: 0.4,
+            ease: "none",
             scrollTrigger: {
               trigger: containerRef.current,
               start: "top top",
-              end: "50% top",
-              scrub: 0.8,
+              end: "55% top",
+              scrub: 1,
             },
           });
         },
       });
     },
-    { scope: containerRef },
+    { scope: containerRef, revertOnUpdate: false },
   );
 
   return (
@@ -107,35 +103,12 @@ export default function Hero() {
         ref={contentRef}
         className="relative z-10 flex w-full max-w-4xl flex-col items-center px-[var(--section-px)] text-center"
       >
-        <h1 className="w-full font-serif leading-[0.92] tracking-tight drop-shadow-[0_4px_32px_rgba(0,0,0,0.6)]">
-          <span className="hero-mask-line block overflow-hidden pb-1">
-            <span
-              ref={(el) => {
-                lineRefs.current[0] = el;
-              }}
-              className="hero-line hero-line--display block text-white"
-            >
-              Osmosis
-            </span>
-          </span>
-          <span className="hero-mask-line block overflow-hidden">
-            <span
-              ref={(el) => {
-                lineRefs.current[1] = el;
-              }}
-              className="hero-line hero-line--sub block text-white/90"
-            >
-              Hacker House
-            </span>
-          </span>
+        <h1 ref={titleRef} className="w-full">
+          <MorphingText
+            texts={["Osmosis", "Hacker House"]}
+            className="font-serif h-auto min-h-[1.1em] w-full max-w-4xl text-[length:var(--text-display)] leading-[0.92] font-normal tracking-tight text-[#fafafa] drop-shadow-[0_4px_32px_rgba(0,0,0,0.6)]"
+          />
         </h1>
-
-        <p
-          ref={metaRef}
-          className="hero-meta mt-6 text-balance tracking-[0.18em] text-white/80 uppercase drop-shadow-[0_2px_16px_rgba(0,0,0,0.5)] sm:mt-8 sm:tracking-[0.35em]"
-        >
-          July 11 – 12 · Whitefield
-        </p>
 
         <div ref={ctaRef} className="hero-cta mt-8 sm:mt-10">
           <GlassButton primary href="#register" label="Apply" />
