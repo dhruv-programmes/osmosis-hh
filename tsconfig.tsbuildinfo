@@ -1,1 +1,1 @@
-{"root":["./src/app.tsx","./src/main.tsx","./src/components/pixelblast.tsx","./src/components/theme-provider.tsx","./src/components/ui/button.tsx","./src/lib/utils.ts"],"errors":true,"version":"6.0.3"}
+{"root":["./src/app.tsx","./src/main.tsx","./src/components/pixelblast.tsx","./src/components/shinytext.tsx","./src/components/ui/button.tsx","./src/lib/utils.ts"],"errors":true,"version":"6.0.3"}

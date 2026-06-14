@@ -1,5 +1,5 @@
 import { Effect, EffectComposer, EffectPass, RenderPass } from 'postprocessing';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 
 type PixelBlastVariant = 'square' | 'circle' | 'triangle' | 'diamond';
@@ -409,8 +409,11 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
     composer?: EffectComposer;
     touch?: ReturnType<typeof createTouchTexture>;
     liquidEffect?: Effect;
+    disposedRef?: { value: boolean };
+    onContextLost?: (event: Event) => void;
   } | null>(null);
   const prevConfigRef = useRef<ReinitConfig | null>(null);
+  const [recovery, setRecovery] = useState(0);
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -435,7 +438,6 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
         t.material.dispose();
         t.composer?.dispose();
         t.renderer.dispose();
-        t.renderer.forceContextLoss();
         if (t.renderer.domElement.parentElement === container) container.removeChild(t.renderer.domElement);
         threeRef.current = null;
       }
@@ -444,6 +446,7 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
         canvas,
         antialias,
         alpha: true,
+        preserveDrawingBuffer: true,
         powerPreference: 'high-performance'
       });
       renderer.domElement.style.width = '100%';
@@ -582,9 +585,18 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
         passive: true
       });
       let raf = 0;
+      const disposedRef = { value: false };
       const animate = () => {
+        if (disposedRef.value) return;
+        const gl = renderer.getContext();
+        if (gl.isContextLost()) {
+          raf = requestAnimationFrame(animate);
+          if (threeRef.current) threeRef.current.raf = raf;
+          return;
+        }
         if (autoPauseOffscreen && !visibilityRef.current.visible) {
           raf = requestAnimationFrame(animate);
+          if (threeRef.current) threeRef.current.raf = raf;
           return;
         }
         uniforms.uTime.value = timeOffset + clock.getElapsedTime() * speedRef.current;
@@ -607,8 +619,16 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
           composer.render();
         } else renderer.render(scene, camera);
         raf = requestAnimationFrame(animate);
+        if (threeRef.current) threeRef.current.raf = raf;
       };
       raf = requestAnimationFrame(animate);
+
+      const onContextLost = (event: Event) => {
+        event.preventDefault();
+        window.setTimeout(() => setRecovery((n) => n + 1), 250);
+      };
+      renderer.domElement.addEventListener('webglcontextlost', onContextLost);
+
       threeRef.current = {
         renderer,
         scene,
@@ -623,7 +643,9 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
         timeOffset,
         composer,
         touch,
-        liquidEffect
+        liquidEffect,
+        disposedRef,
+        onContextLost
       };
     } else {
       const t = threeRef.current!;
@@ -651,17 +673,21 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
     }
     prevConfigRef.current = cfg;
     return () => {
-      if (threeRef.current && mustReinit) return;
       if (!threeRef.current) return;
       const t = threeRef.current;
+      if (t.disposedRef) t.disposedRef.value = true;
       t.resizeObserver?.disconnect();
-      cancelAnimationFrame(t.raf!);
+      if (t.onContextLost) {
+        t.renderer.domElement.removeEventListener('webglcontextlost', t.onContextLost);
+      }
+      if (t.raf) cancelAnimationFrame(t.raf);
       t.quad?.geometry.dispose();
       t.material.dispose();
       t.composer?.dispose();
       t.renderer.dispose();
-      t.renderer.forceContextLoss();
-      if (t.renderer.domElement.parentElement === container) container.removeChild(t.renderer.domElement);
+      if (t.renderer.domElement.parentElement === container) {
+        container.removeChild(t.renderer.domElement);
+      }
       threeRef.current = null;
     };
   }, [
@@ -684,7 +710,8 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
     autoPauseOffscreen,
     variant,
     color,
-    speed
+    speed,
+    recovery
   ]);
 
   return (
