@@ -2,12 +2,13 @@ import { useEffect, useRef } from "react";
 import PixelDust from "./PixelDust";
 import { PixelDustProvider } from "./pixel/PixelDustContext";
 import Navbar from "./Navbar";
+import CurvedLoopMarquee from "./sections/CurvedLoopMarquee";
 import Experience from "./sections/Experience";
 import Hero from "./sections/Hero";
 import Mentors from "./sections/Mentors";
 import RegisterCta from "./sections/RegisterCta";
 import Footer from "./sections/Footer";
-import Schedule from "./sections/Schedule";
+import StackingCards from "./sections/StackingCards";
 import Venue from "./sections/Venue";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 import { ScrollTrigger } from "@/lib/gsap";
@@ -30,10 +31,11 @@ export default function EventLanding() {
 
         <main ref={mainRef} className="relative z-10">
           <Hero />
+          <CurvedLoopMarquee />
           <Experience />
-          <Venue />
           <Mentors />
-          <Schedule />
+          <Venue />
+          <StackingCards />
           <RegisterCta />
           <Footer />
         </main>

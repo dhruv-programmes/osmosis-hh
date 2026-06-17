@@ -32,15 +32,20 @@ export default function SpotlightCard({
     <div
       ref={divRef}
       onMouseMove={handleMouseMove}
-      className={cn("card-spotlight", liquid && "card-liquid-glass", className)}
+      className={cn(
+        "card-spotlight",
+        liquid && "card-liquid-glass",
+        !liquid && "card-spotlight-plain",
+        className,
+      )}
     >
       {liquid ? (
         <>
           <div className="card-liquid-glass-backdrop" aria-hidden />
           <div className="card-liquid-glass-rim" aria-hidden />
-          <div className="card-liquid-edge" aria-hidden />
         </>
       ) : null}
+      <div className="card-spotlight-edge" aria-hidden />
       <div className="card-spotlight-content">{children}</div>
     </div>
   );

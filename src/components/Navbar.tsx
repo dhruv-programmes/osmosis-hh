@@ -2,12 +2,13 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { spring } from "@/lib/motion";
+import GlassButton from "./GlassButton";
 
 const links = [
-  { label: "Experience", href: "#experience" },
-  { label: "Venue", href: "#venue" },
-  { label: "Mentors", href: "#mentors" },
   { label: "Schedule", href: "#schedule" },
+  { label: "About", href: "#about" },
+  { label: "Mentors", href: "#mentors" },
+  { label: "Venue", href: "#venue" },
 ];
 
 export default function Navbar() {
@@ -33,7 +34,7 @@ export default function Navbar() {
       <div className="w-full max-w-lg">
         <motion.nav
           aria-label="Main navigation"
-          className="relative flex w-full items-center justify-between gap-3 rounded-full border border-white/10 bg-[rgba(6,8,10,0.82)] px-4 py-2 shadow-[0_8px_28px_rgba(0,0,0,0.4)] backdrop-blur-xl sm:px-5"
+          className="relative flex w-full items-center justify-between gap-3 overflow-visible rounded-full border border-white/10 bg-[rgba(6,8,10,0.82)] px-4 py-2 shadow-[0_8px_28px_rgba(0,0,0,0.4)] backdrop-blur-xl sm:px-5"
         >
           <a
             href="#"
@@ -56,16 +57,8 @@ export default function Navbar() {
             ))}
           </div>
 
-          <div className="relative z-10 flex items-center gap-2">
-            <motion.a
-              href="#register"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.96 }}
-              transition={spring.snappy}
-              className="touch-target inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-medium text-neutral-900"
-            >
-              Apply
-            </motion.a>
+          <div className="relative z-10 flex shrink-0 items-center gap-2 overflow-visible">
+            <GlassButton href="#register" label="Apply" size="nav" className="touch-target" />
 
             <button
               type="button"

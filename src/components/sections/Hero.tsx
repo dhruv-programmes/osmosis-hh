@@ -84,7 +84,7 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden pt-[calc(7rem+var(--safe-top))] pb-[max(1.5rem,var(--safe-bottom))] sm:pt-[calc(7.5rem+var(--safe-top))]"
+      className="relative flex min-h-svh flex-col overflow-hidden pt-[calc(7rem+var(--safe-top))] pb-0 sm:pt-[calc(7.5rem+var(--safe-top))]"
     >
       <div ref={bgRef} className="hero-bg absolute inset-0" aria-hidden>
         <Grainient {...heroGrainient} className="absolute inset-0" />
@@ -102,9 +102,9 @@ export default function Hero() {
 
       <div
         ref={contentRef}
-        className="relative z-10 mt-4 flex w-full max-w-4xl flex-col items-center px-[var(--section-px)] text-center sm:mt-6"
+        className="relative z-10 flex flex-1 flex-col items-center justify-center px-[var(--section-px)] text-center"
       >
-        <h1 ref={titleRef} className="w-full">
+        <h1 ref={titleRef} className="mt-4 w-full sm:mt-6">
           <MorphingText
             texts={["Osmosis", "Hacker House"]}
             className="font-serif h-auto min-h-[1.1em] w-full max-w-4xl text-[length:var(--text-display)] leading-[0.92] font-normal tracking-tight text-[#fafafa] drop-shadow-[0_4px_32px_rgba(0,0,0,0.6)]"
@@ -112,11 +112,11 @@ export default function Hero() {
         </h1>
 
         <div ref={ctaRef} className="hero-cta mt-8 sm:mt-10">
-          <GlassButton primary href="#register" label="Apply" />
+          <GlassButton href="#register" label="Apply" />
         </div>
-
-        <Sponsors className="mt-6 w-full sm:mt-8" />
       </div>
+
+      <Sponsors className="relative z-10 mb-0 w-full shrink-0" />
     </section>
   );
 }

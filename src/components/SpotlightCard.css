@@ -1,13 +1,16 @@
 .card-spotlight {
   position: relative;
   border-radius: 1rem;
-  padding: clamp(1.25rem, 1rem + 1.5vw, 2rem);
   overflow: hidden;
   isolation: isolate;
-  container-type: inline-size;
   --mouse-x: 50%;
   --mouse-y: 50%;
   --spotlight-color: rgba(129, 186, 44, 0.14);
+}
+
+.card-spotlight:not(.card-spotlight-plain) {
+  padding: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+  container-type: inline-size;
 }
 
 @media (min-width: 640px) {
@@ -50,27 +53,43 @@
   );
 }
 
-.card-liquid-edge {
+.card-spotlight-edge {
   position: absolute;
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
   z-index: 2;
   background: radial-gradient(
-    ellipse 70% 55% at var(--mouse-x) var(--mouse-y),
+    circle at var(--mouse-x) var(--mouse-y),
     var(--spotlight-color),
-    transparent 65%
+    transparent 80%
   );
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.45s ease-in-out;
 }
 
-.card-liquid-glass:hover .card-liquid-edge,
-.card-liquid-glass:focus-within .card-liquid-edge {
-  opacity: 1;
+.card-spotlight-plain {
+  width: 100%;
 }
 
 .card-spotlight-content {
   position: relative;
   z-index: 3;
+  min-width: 0;
+  height: 100%;
+}
+
+.card-spotlight:hover .card-spotlight-edge,
+.card-spotlight:focus-within .card-spotlight-edge {
+  opacity: 0.6;
+}
+
+.card-liquid-glass:hover .card-spotlight-edge,
+.card-liquid-glass:focus-within .card-spotlight-edge {
+  background: radial-gradient(
+    ellipse 70% 55% at var(--mouse-x) var(--mouse-y),
+    var(--spotlight-color),
+    transparent 65%
+  );
+  opacity: 1;
 }

@@ -15,41 +15,56 @@ interface SparklesLogoWallProps {
   subline?: ReactNode;
 }
 
+const sans = "font-[family-name:'Geist_Variable',system-ui,sans-serif]";
+
 export default function SparklesLogoWall({
   logos,
   className,
   headline = (
-    <>
-      <span className="text-[#a8d95a]/90">Proudly supported by.</span>
-      <br />
-      <span>Our event sponsors.</span>
-    </>
+    <h2
+      className={cn(
+        sans,
+        "text-[clamp(1.625rem,4.5vw,2.25rem)] font-semibold tracking-[-0.04em] text-[#f5f5f7]",
+      )}
+    >
+      Our event{" "}
+      <span className="box-decoration-clone bg-[linear-gradient(transparent_42%,rgba(168,217,90,0.85)_42%,rgba(168,217,90,0.85)_80%,transparent_80%)] px-0.5">
+        Sponsors
+      </span>
+    </h2>
   ),
   subline,
 }: SparklesLogoWallProps) {
   const colClass =
-    logos.length <= 4
-      ? "grid-cols-2 sm:grid-cols-4"
-      : "grid-cols-2 sm:grid-cols-3 md:grid-cols-5";
+    logos.length === 3
+      ? "grid-cols-2 sm:grid-cols-3"
+      : logos.length <= 4
+        ? "grid-cols-2 sm:grid-cols-4"
+        : "grid-cols-2 sm:grid-cols-3 md:grid-cols-5";
 
   return (
     <div className={cn("relative w-full overflow-hidden", className)}>
-      <div
-        aria-hidden
-        className="pointer-events-none relative h-14 w-full overflow-hidden sm:h-16 before:absolute before:inset-0 before:bg-[radial-gradient(ellipse_at_top,#81ba2c,transparent_72%)] before:opacity-35 after:absolute after:top-0 after:left-1/2 after:aspect-[2/0.55] after:w-[200%] after:-translate-x-1/2 after:rounded-[100%] after:border-t after:border-[#81ba2c55] after:bg-hh-bg/90"
-      />
+      <div aria-hidden className="pointer-events-none relative h-8 w-full sm:h-10">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_100%_90%_at_50%_0%,rgba(129,186,44,0.14),transparent_70%)]" />
+        <div className="absolute left-1/2 top-0 aspect-[2.4/0.28] w-[155%] -translate-x-1/2 rounded-[100%] border-t border-[#81ba2c40] bg-gradient-to-b from-white/[0.04] to-transparent" />
+      </div>
 
-      <div className="relative z-10 mx-auto w-full max-w-3xl px-[var(--section-px)] pt-3 sm:pt-4">
-        {headline ? (
-          <div className="text-center text-2xl text-white sm:text-3xl">{headline}</div>
-        ) : null}
+      <div className="relative z-10 mx-auto w-full max-w-4xl px-[var(--section-px)] pt-2 sm:pt-3">
+        {headline ? <div className="text-center">{headline}</div> : null}
         {subline ? (
-          <p className="mt-2 text-center text-sm text-white/60 sm:text-base">{subline}</p>
+          <p
+            className={cn(
+              sans,
+              "mt-3 text-center text-sm font-medium tracking-[-0.01em] text-white/55 sm:text-[0.9375rem]",
+            )}
+          >
+            {subline}
+          </p>
         ) : null}
 
         <ul
           className={cn(
-            "mt-8 grid w-full items-center justify-items-center gap-x-6 gap-y-6 sm:mt-9 sm:gap-x-8",
+            "mt-5 grid w-full items-center justify-items-center gap-x-8 gap-y-6 sm:mt-6 sm:gap-x-10 sm:gap-y-7",
             colClass,
           )}
         >
@@ -59,7 +74,7 @@ export default function SparklesLogoWall({
                 src={logo.src}
                 alt={logo.name}
                 loading="lazy"
-                className="h-8 w-auto max-w-[min(120px,24vw)] object-contain opacity-85 transition-opacity duration-300 hover:opacity-100 sm:h-9"
+                className="h-11 w-auto max-w-[min(160px,34vw)] object-contain opacity-90 transition-opacity duration-300 hover:opacity-100 sm:h-12 md:h-14 md:max-w-[min(200px,28vw)]"
               />
             );
 
@@ -85,8 +100,10 @@ export default function SparklesLogoWall({
 
       <div
         aria-hidden
-        className="pointer-events-none relative -mt-20 h-52 w-full overflow-hidden mask-[radial-gradient(50%_50%,white,transparent)] sm:-mt-24 sm:h-60 before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_bottom_center,#81ba2c,transparent_70%)] before:opacity-35 after:absolute after:top-1/2 after:-left-1/2 after:aspect-[1/0.7] after:w-[200%] after:rounded-[100%] after:border-t after:border-[#81ba2c55] after:bg-zinc-900/50"
+        className="pointer-events-none relative -mt-4 h-10 w-full overflow-hidden mask-[radial-gradient(50%_50%,white,transparent)] sm:-mt-5 sm:h-12"
       >
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_center,rgba(129,186,44,0.22),transparent_72%)]" />
+        <div className="absolute left-1/2 top-[42%] aspect-[1/0.65] w-[200%] -translate-x-1/2 rounded-[100%] border-t border-[#81ba2c30] shadow-[0_-10px_36px_rgba(129,186,44,0.1)]" />
         <SparklesCore
           id="partner-sparkles"
           background="transparent"
