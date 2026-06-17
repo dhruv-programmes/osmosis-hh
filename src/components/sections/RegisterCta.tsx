@@ -64,13 +64,3 @@ export default function RegisterCta() {
     </Section>
   );
 }
-
-export function Footer() {
-  return (
-    <footer className="relative border-t border-white/[0.06] px-[var(--section-px)] py-8 pb-[max(2rem,var(--safe-bottom))]">
-      <p className="text-center text-sm text-white/80 text-pretty">
-        Osmosis Hacker House · Whitefield · July 11 – 12
-      </p>
-    </footer>
-  );
-}

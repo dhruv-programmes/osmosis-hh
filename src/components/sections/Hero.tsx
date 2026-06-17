@@ -2,6 +2,7 @@ import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
 import GlassButton from "../GlassButton";
 import Grainient from "../Grainient";
+import Sponsors from "./Sponsors";
 import { MorphingText } from "@/components/ui/morphing-text";
 import { heroGrainient } from "../grainientConfig";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
@@ -83,7 +84,7 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative flex min-h-svh items-center justify-center overflow-hidden pt-[calc(4.5rem+var(--safe-top))] pb-[max(2rem,var(--safe-bottom))]"
+      className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden pt-[calc(7rem+var(--safe-top))] pb-[max(1.5rem,var(--safe-bottom))] sm:pt-[calc(7.5rem+var(--safe-top))]"
     >
       <div ref={bgRef} className="hero-bg absolute inset-0" aria-hidden>
         <Grainient {...heroGrainient} className="absolute inset-0" />
@@ -101,7 +102,7 @@ export default function Hero() {
 
       <div
         ref={contentRef}
-        className="relative z-10 flex w-full max-w-4xl flex-col items-center px-[var(--section-px)] text-center"
+        className="relative z-10 mt-4 flex w-full max-w-4xl flex-col items-center px-[var(--section-px)] text-center sm:mt-6"
       >
         <h1 ref={titleRef} className="w-full">
           <MorphingText
@@ -113,6 +114,8 @@ export default function Hero() {
         <div ref={ctaRef} className="hero-cta mt-8 sm:mt-10">
           <GlassButton primary href="#register" label="Apply" />
         </div>
+
+        <Sponsors className="mt-6 w-full sm:mt-8" />
       </div>
     </section>
   );

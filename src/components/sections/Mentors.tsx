@@ -2,16 +2,8 @@ import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
 import Section from "../Section";
 import SectionHeader from "../SectionHeader";
-import SparklesLogoWall from "@/components/mvpblocks/sparkles-logo";
 import ChromaGrid, { type ChromaItem } from "@/components/ui/chroma-grid";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
-
-const partnerLogos = [
-  { name: "Covalent", src: "/assets/logos/covalent.png", href: "https://covalent.xyz" },
-  { name: "Google", src: "/assets/logos/google.png", href: "https://google.com" },
-  { name: "Clueso", src: "/assets/logos/clueso.png", href: "https://clueso.io" },
-  { name: "Supabase", src: "/assets/logos/supabase.png", href: "https://supabase.com" },
-];
 
 const mentors: ChromaItem[] = [
   {
@@ -24,14 +16,14 @@ const mentors: ChromaItem[] = [
   {
     image: "/assets/mentors/mentor-2.png",
     title: "Cuy Sheffield",
-    subtitle: "head of crypto visa labs",
+    subtitle: "Head of Crypto Visa Labs",
     borderColor: "#10B981",
     gradient: "linear-gradient(180deg, #10B981, #000)",
   },
   {
     image: "/assets/mentors/mentor-3.png",
     title: "James kaplan",
-    subtitle: "cto of McKinsey and co tech",
+    subtitle: "CTO of McKinsey and Co Tech",
     borderColor: "#3B82F6",
     gradient: "linear-gradient(145deg, #3B82F6, #000)",
   },
@@ -89,18 +81,6 @@ export default function Mentors() {
           ease="power3.out"
         />
       </div>
-
-      <SparklesLogoWall
-        className="mt-10 pb-8 sm:mt-14"
-        logos={partnerLogos}
-        headline={
-          <>
-            <span className="text-[#a8d95a]/90">Backed by builders.</span>
-            <br />
-            <span>From teams that ship.</span>
-          </>
-        }
-      />
     </Section>
   );
 }
