@@ -4,6 +4,7 @@ import { PixelDustProvider } from "./pixel/PixelDustContext";
 import Navbar from "./Navbar";
 import Experience from "./sections/Experience";
 import Hero from "./sections/Hero";
+import Mentors from "./sections/Mentors";
 import RegisterCta, { Footer } from "./sections/RegisterCta";
 import Schedule from "./sections/Schedule";
 import Venue from "./sections/Venue";
@@ -30,6 +31,7 @@ export default function EventLanding() {
           <Hero />
           <Experience />
           <Venue />
+          <Mentors />
           <Schedule />
           <RegisterCta />
           <Footer />

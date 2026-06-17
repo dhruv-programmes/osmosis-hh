@@ -1,2 +1,3 @@
 allowBuilds:
+  '@tsparticles/engine': true
   canvas: set this to true or false
