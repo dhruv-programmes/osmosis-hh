@@ -15,6 +15,7 @@ type ParticlesProps = {
   speed?: number;
   particleColor?: string;
   particleDensity?: number;
+  fpsLimit?: number;
 };
 
 export const SparklesCore = ({
@@ -26,6 +27,7 @@ export const SparklesCore = ({
   speed,
   particleColor,
   particleDensity,
+  fpsLimit = 60,
 }: ParticlesProps) => {
   const controls = useAnimation();
   const generatedId = useId();
@@ -51,7 +53,7 @@ export const SparklesCore = ({
               color: { value: background || "transparent" },
             },
             fullScreen: { enable: false },
-            fpsLimit: 120,
+            fpsLimit,
             particles: {
               color: { value: particleColor || "#ffffff" },
               move: {

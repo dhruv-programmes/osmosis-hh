@@ -39,8 +39,8 @@ export const PIXEL_DUST_STACKING = {
 
 export const PIXEL_DUST_STACKING_MOBILE = {
   ...PIXEL_DUST_STACKING,
-  pixelSize: 3,
-  patternDensity: 2,
+  pixelSize: 4,
+  patternDensity: 1,
   enableRipples: false,
-  speed: 0.28,
+  speed: 0.18,
 };

@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 import { SparklesCore } from "@/components/ui/sparkles";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { media } from "@/lib/breakpoints";
 import { cn } from "@/lib/utils";
 
 export interface PartnerLogo {
@@ -36,6 +38,7 @@ export default function SparklesLogoWall({
   ),
   subline,
 }: SparklesLogoWallProps) {
+  const isMobile = useMediaQuery(media.maxMd);
   const colClass =
     logos.length === 3
       ? "grid-cols-2 sm:grid-cols-3"
@@ -113,7 +116,8 @@ export default function SparklesLogoWall({
         <SparklesCore
           id="partner-sparkles"
           background="transparent"
-          particleDensity={240}
+          particleDensity={isMobile ? 120 : 240}
+          fpsLimit={isMobile ? 30 : 60}
           particleColor="#c8e6a0"
           className="absolute inset-x-0 bottom-0 h-full w-full mask-[radial-gradient(50%_50%,white,transparent_85%)]"
         />

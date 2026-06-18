@@ -1,5 +1,10 @@
-import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
-import { useMemo, useRef } from "react";
+import {
+  motion,
+  useReducedMotion,
+  useTransform,
+  type MotionValue,
+} from "motion/react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { media } from "@/lib/breakpoints";
 import { cn } from "@/lib/utils";
@@ -12,6 +17,7 @@ export interface StackingCardProps {
   color: string;
   cta: string;
   href: string;
+  sectionProgress: MotionValue<number>;
   progress: MotionValue<number>;
   range: [number, number];
   targetScale: number;
@@ -53,7 +59,7 @@ function TextPanel({
 }) {
   return (
     <div className="flex w-full flex-col justify-center md:w-[44%]">
-      <div className="rounded-2xl border border-white/10 bg-[#080809]/76 p-5 backdrop-blur-xl sm:p-6 lg:p-7">
+      <div className="rounded-2xl border border-white/10 bg-[#080809]/76 p-5 backdrop-blur-xl max-md:bg-[#080809]/92 max-md:backdrop-blur-none sm:p-6 lg:p-7">
         <DescriptionCopy text={description} />
 
         <a
@@ -89,12 +95,20 @@ function TextPanel({
 function ImagePanel({
   url,
   imageScale,
+  active,
 }: {
   url: string;
   imageScale: MotionValue<number>;
+  active: boolean;
 }) {
   return (
-    <div className="relative min-h-[220px] flex-1 overflow-hidden rounded-2xl shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)] max-md:aspect-[16/10] max-md:min-h-[180px] max-md:w-full max-md:flex-none">
+    <div
+      className={cn(
+        "relative min-h-[220px] flex-1 overflow-hidden rounded-2xl shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)] max-md:aspect-[16/10] max-md:min-h-[180px] max-md:w-full max-md:flex-none",
+        active && "will-change-transform",
+      )}
+      style={{ backfaceVisibility: "hidden", transform: "translate3d(0,0,0)" }}
+    >
       <motion.div className="h-full w-full" style={{ scale: imageScale }}>
         <img src={url} alt="" className="absolute inset-0 h-full w-full object-cover" />
       </motion.div>
@@ -110,6 +124,7 @@ export function StackingCard({
   color,
   cta,
   href,
+  sectionProgress,
   progress,
   range,
   targetScale,
@@ -118,21 +133,36 @@ export function StackingCard({
   const textOnLeft = i % 2 === 0;
   const isMobile = useMediaQuery(media.maxMd);
   const reduceMotion = useReducedMotion();
+  const [active, setActive] = useState(false);
 
-  const { scrollYProgress } = useScroll({
-    target: container,
-    offset: ["start end", "start start"],
-  });
-
+  const parallaxStart = i * 0.18;
+  const parallaxEnd = Math.min(parallaxStart + 0.22, 1);
   const parallaxRange: [number, number] = reduceMotion
     ? [1, 1]
     : isMobile
-      ? [1.15, 1]
+      ? [1, 1]
       : [2, 1];
-  const imageScale = useTransform(scrollYProgress, [0, 1], parallaxRange);
+
+  const imageScale = useTransform(
+    sectionProgress,
+    [parallaxStart, parallaxEnd],
+    parallaxRange,
+  );
   const scale = useTransform(progress, range, [1, targetScale]);
 
   const cardTop = isMobile ? `calc(-2vh + ${i * 12}px)` : `calc(-5vh + ${i * 25}px)`;
+
+  useEffect(() => {
+    const el = container.current;
+    if (!el) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => setActive(entry.isIntersecting),
+      { threshold: 0.05 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   return (
     <div
@@ -144,6 +174,8 @@ export function StackingCard({
           backgroundColor: color,
           scale,
           top: cardTop,
+          backfaceVisibility: "hidden",
+          willChange: active ? "transform" : "auto",
         }}
         className="relative -top-[25%] flex h-[min(520px,78vh)] w-full max-w-5xl origin-top flex-col rounded-[28px] p-4 shadow-[0_24px_80px_rgba(0,0,0,0.35)] max-md:h-auto max-md:min-h-0 max-md:max-h-[min(560px,88dvh)] max-md:-top-[8%] sm:p-6 lg:p-9"
       >
@@ -164,7 +196,7 @@ export function StackingCard({
           )}
         >
           <TextPanel description={description} cta={cta} href={href} />
-          <ImagePanel url={url} imageScale={imageScale} />
+          <ImagePanel url={url} imageScale={imageScale} active={active} />
         </div>
       </motion.article>
     </div>

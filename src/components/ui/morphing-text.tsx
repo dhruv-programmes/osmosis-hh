@@ -1,15 +1,19 @@
-import { useCallback, useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef, type RefObject } from "react"
 
 import { cn } from "@/lib/utils"
 
 const morphTime = 1.5
 const cooldownTime = 0.5
 
-const useMorphingText = (texts: string[]) => {
+const useMorphingText = (
+  texts: string[],
+  containerRef: RefObject<HTMLElement | null>,
+) => {
   const textIndexRef = useRef(0)
   const morphRef = useRef(0)
   const cooldownRef = useRef(0)
   const timeRef = useRef(new Date())
+  const isVisibleRef = useRef(true)
 
   const text1Ref = useRef<HTMLSpanElement>(null)
   const text2Ref = useRef<HTMLSpanElement>(null)
@@ -65,10 +69,39 @@ const useMorphingText = (texts: string[]) => {
   }, [])
 
   useEffect(() => {
-    let animationFrameId: number
+    const el = containerRef.current
+    if (!el) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        isVisibleRef.current = entry.isIntersecting
+      },
+      { threshold: 0 },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [containerRef])
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const [current1, current2] = [text1Ref.current, text2Ref.current]
+      if (current1 && current2) {
+        current1.textContent = texts[0]
+        current2.textContent = texts[1] ?? texts[0]
+        current1.style.filter = "none"
+        current1.style.opacity = "1"
+        current2.style.filter = "none"
+        current2.style.opacity = "0"
+      }
+      return
+    }
+
+    let animationFrameId = 0
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate)
+
+      if (!isVisibleRef.current) return
 
       const newTime = new Date()
       const dt = (newTime.getTime() - timeRef.current.getTime()) / 1000
@@ -84,7 +117,7 @@ const useMorphingText = (texts: string[]) => {
     return () => {
       cancelAnimationFrame(animationFrameId)
     }
-  }, [doMorph, doCooldown])
+  }, [doMorph, doCooldown, texts])
 
   return { text1Ref, text2Ref }
 }
@@ -94,8 +127,10 @@ interface MorphingTextProps {
   texts: string[]
 }
 
-const Texts: React.FC<Pick<MorphingTextProps, "texts">> = ({ texts }) => {
-  const { text1Ref, text2Ref } = useMorphingText(texts)
+const Texts: React.FC<
+  Pick<MorphingTextProps, "texts"> & { containerRef: RefObject<HTMLDivElement | null> }
+> = ({ texts, containerRef }) => {
+  const { text1Ref, text2Ref } = useMorphingText(texts, containerRef)
   return (
     <>
       <span
@@ -134,14 +169,19 @@ const SvgFilters: React.FC = () => (
 export const MorphingText: React.FC<MorphingTextProps> = ({
   texts,
   className,
-}) => (
-  <div
-    className={cn(
-      "relative mx-auto h-16 w-full max-w-3xl text-center font-sans text-[40pt] leading-none font-bold filter-[url(#threshold)_blur(0.6px)] md:h-24 lg:text-[6rem]",
-      className
-    )}
-  >
-    <Texts texts={texts} />
-    <SvgFilters />
-  </div>
-)
+}) => {
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  return (
+    <div
+      ref={containerRef}
+      className={cn(
+        "relative mx-auto h-16 w-full max-w-3xl text-center font-sans text-[40pt] leading-none font-bold filter-[url(#threshold)_blur(0.6px)] md:h-24 lg:text-[6rem]",
+        className
+      )}
+    >
+      <Texts texts={texts} containerRef={containerRef} />
+      <SvgFilters />
+    </div>
+  )
+}

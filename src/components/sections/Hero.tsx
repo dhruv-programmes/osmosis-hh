@@ -73,7 +73,7 @@ export default function Hero() {
               trigger: containerRef.current,
               start: "top top",
               end: "55% top",
-              scrub: 1,
+              scrub: 1.5,
             },
           });
         },

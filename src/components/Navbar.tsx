@@ -1,7 +1,8 @@
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Menu, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState, type MouseEvent } from "react";
 import { spring } from "@/lib/motion";
+import { scrollToSection } from "@/lib/scrollToSection";
 import GlassButton from "./GlassButton";
 
 const links = [
@@ -15,14 +16,16 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const reduceMotion = useReducedMotion();
 
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
-
   const closeMenu = () => setOpen(false);
+
+  const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    event.preventDefault();
+    closeMenu();
+
+    requestAnimationFrame(() => {
+      scrollToSection(href);
+    });
+  };
 
   return (
     <motion.header
@@ -38,6 +41,7 @@ export default function Navbar() {
         >
           <a
             href="#"
+            onClick={(event) => handleNavClick(event, "#")}
             className="touch-target relative z-10 inline-flex items-center text-sm font-medium text-white"
           >
             Osmosis
@@ -48,6 +52,7 @@ export default function Navbar() {
               <motion.a
                 key={link.href}
                 href={link.href}
+                onClick={(event) => handleNavClick(event, link.href)}
                 className="text-sm text-white/88"
                 whileHover={{ color: "rgba(255,255,255,0.98)", y: -1 }}
                 transition={spring.snappy}
@@ -81,14 +86,14 @@ export default function Navbar() {
               animate={{ opacity: 1, y: 0, height: "auto" }}
               exit={{ opacity: 0, y: -8, height: 0 }}
               transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-2 overflow-hidden rounded-2xl border border-white/10 bg-[rgba(6,8,10,0.94)] backdrop-blur-xl md:hidden"
+              className="relative z-50 mt-2 overflow-hidden rounded-2xl border border-white/10 bg-[rgba(6,8,10,0.94)] backdrop-blur-xl md:hidden"
             >
               <ul className="flex flex-col gap-1 p-2">
                 {links.map((link) => (
                   <li key={link.href}>
                     <a
                       href={link.href}
-                      onClick={closeMenu}
+                      onClick={(event) => handleNavClick(event, link.href)}
                       className="touch-target flex items-center rounded-xl px-4 py-3 text-sm text-white/90 transition-colors hover:bg-white/6 hover:text-white"
                     >
                       {link.label}

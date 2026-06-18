@@ -1,4 +1,6 @@
 import { useRef, useEffect, type CSSProperties, type MouseEventHandler, type PointerEvent } from "react";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { media } from "@/lib/breakpoints";
 import { gsap } from "@/lib/gsap";
 
 export interface ChromaItem {
@@ -38,6 +40,7 @@ export default function ChromaGrid({
   const pos = useRef({ x: 0, y: 0 });
 
   const data = items ?? [];
+  const isMobile = useMediaQuery(media.maxMd);
 
   useEffect(() => {
     const el = rootRef.current;
@@ -146,32 +149,36 @@ export default function ChromaGrid({
           </footer>
         </article>
       ))}
-      <div
-        className="pointer-events-none absolute inset-0 z-30"
-        style={{
-          backdropFilter: "grayscale(1) brightness(0.78)",
-          WebkitBackdropFilter: "grayscale(1) brightness(0.78)",
-          background: "rgba(0,0,0,0.001)",
-          maskImage:
-            "radial-gradient(circle var(--r) at var(--x) var(--y),transparent 0%,transparent 15%,rgba(0,0,0,0.10) 30%,rgba(0,0,0,0.22)45%,rgba(0,0,0,0.35)60%,rgba(0,0,0,0.50)75%,rgba(0,0,0,0.68)88%,white 100%)",
-          WebkitMaskImage:
-            "radial-gradient(circle var(--r) at var(--x) var(--y),transparent 0%,transparent 15%,rgba(0,0,0,0.10) 30%,rgba(0,0,0,0.22)45%,rgba(0,0,0,0.35)60%,rgba(0,0,0,0.50)75%,rgba(0,0,0,0.68)88%,white 100%)",
-        }}
-      />
-      <div
-        ref={fadeRef}
-        className="pointer-events-none absolute inset-0 z-40 transition-opacity duration-[250ms]"
-        style={{
-          backdropFilter: "grayscale(1) brightness(0.78)",
-          WebkitBackdropFilter: "grayscale(1) brightness(0.78)",
-          background: "rgba(0,0,0,0.001)",
-          maskImage:
-            "radial-gradient(circle var(--r) at var(--x) var(--y),white 0%,white 15%,rgba(255,255,255,0.90)30%,rgba(255,255,255,0.78)45%,rgba(255,255,255,0.65)60%,rgba(255,255,255,0.50)75%,rgba(255,255,255,0.32)88%,transparent 100%)",
-          WebkitMaskImage:
-            "radial-gradient(circle var(--r) at var(--x) var(--y),white 0%,white 15%,rgba(255,255,255,0.90)30%,rgba(255,255,255,0.78)45%,rgba(255,255,255,0.65)60%,rgba(255,255,255,0.50)75%,rgba(255,255,255,0.32)88%,transparent 100%)",
-          opacity: 1,
-        }}
-      />
+      {!isMobile ? (
+        <>
+          <div
+            className="pointer-events-none absolute inset-0 z-30"
+            style={{
+              backdropFilter: "grayscale(1) brightness(0.78)",
+              WebkitBackdropFilter: "grayscale(1) brightness(0.78)",
+              background: "rgba(0,0,0,0.001)",
+              maskImage:
+                "radial-gradient(circle var(--r) at var(--x) var(--y),transparent 0%,transparent 15%,rgba(0,0,0,0.10) 30%,rgba(0,0,0,0.22)45%,rgba(0,0,0,0.35)60%,rgba(0,0,0,0.50)75%,rgba(0,0,0,0.68)88%,white 100%)",
+              WebkitMaskImage:
+                "radial-gradient(circle var(--r) at var(--x) var(--y),transparent 0%,transparent 15%,rgba(0,0,0,0.10) 30%,rgba(0,0,0,0.22)45%,rgba(0,0,0,0.35)60%,rgba(0,0,0,0.50)75%,rgba(0,0,0,0.68)88%,white 100%)",
+            }}
+          />
+          <div
+            ref={fadeRef}
+            className="pointer-events-none absolute inset-0 z-40 transition-opacity duration-[250ms]"
+            style={{
+              backdropFilter: "grayscale(1) brightness(0.78)",
+              WebkitBackdropFilter: "grayscale(1) brightness(0.78)",
+              background: "rgba(0,0,0,0.001)",
+              maskImage:
+                "radial-gradient(circle var(--r) at var(--x) var(--y),white 0%,white 15%,rgba(255,255,255,0.90)30%,rgba(255,255,255,0.78)45%,rgba(255,255,255,0.65)60%,rgba(255,255,255,0.50)75%,rgba(255,255,255,0.32)88%,transparent 100%)",
+              WebkitMaskImage:
+                "radial-gradient(circle var(--r) at var(--x) var(--y),white 0%,white 15%,rgba(255,255,255,0.90)30%,rgba(255,255,255,0.78)45%,rgba(255,255,255,0.65)60%,rgba(255,255,255,0.50)75%,rgba(255,255,255,0.32)88%,transparent 100%)",
+              opacity: 1,
+            }}
+          />
+        </>
+      ) : null}
     </div>
   );
 }

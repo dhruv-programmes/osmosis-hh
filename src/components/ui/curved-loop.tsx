@@ -52,6 +52,8 @@ export default function CurvedLoop({
   const lastXRef = useRef(0);
   const dirRef = useRef<"left" | "right">(direction);
   const velRef = useRef(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isVisibleRef = useRef(true);
 
   const textLength = spacing;
   const totalText = textLength
@@ -77,11 +79,25 @@ export default function CurvedLoop({
   }, [spacing]);
 
   useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        isVisibleRef.current = entry.isIntersecting;
+      },
+      { threshold: 0 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
     if (!spacing || !ready || animationSpeed === 0) return;
 
     let frame = 0;
     const step = () => {
-      if (!dragRef.current && textPathRef.current) {
+      if (isVisibleRef.current && !dragRef.current && textPathRef.current) {
         const delta = dirRef.current === "right" ? animationSpeed : -animationSpeed;
         const currentOffset = parseFloat(textPathRef.current.getAttribute("startOffset") || "0");
         let newOffset = currentOffset + delta;
@@ -132,6 +148,7 @@ export default function CurvedLoop({
 
   return (
     <div
+      ref={containerRef}
       className={cn("flex w-full items-start justify-center overflow-x-clip", containerClassName)}
       style={{ visibility: ready ? "visible" : "hidden", cursor: cursorStyle }}
       onPointerDown={onPointerDown}

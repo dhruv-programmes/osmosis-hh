@@ -4,7 +4,6 @@ import { useScroll } from "motion/react";
 import PixelBlast from "../PixelBlast";
 import {
   PIXEL_DUST_STACKING,
-  PIXEL_DUST_STACKING_MOBILE,
 } from "../pixel/pixelDustConfig";
 import { StackingCard } from "../StackingCard";
 
@@ -59,9 +58,8 @@ const projects = [
 function getStackingDustConfig() {
   if (typeof window === "undefined") return PIXEL_DUST_STACKING;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return null;
-  return window.matchMedia(media.maxMd).matches
-    ? PIXEL_DUST_STACKING_MOBILE
-    : PIXEL_DUST_STACKING;
+  if (window.matchMedia(media.maxMd).matches) return null;
+  return PIXEL_DUST_STACKING;
 }
 
 export default function StackingCards() {
@@ -120,6 +118,7 @@ export default function StackingCards() {
               description={project.description}
               cta={project.cta}
               href={project.href}
+              sectionProgress={scrollYProgress}
               progress={scrollYProgress}
               range={[i * 0.25, 1]}
               targetScale={targetScale}

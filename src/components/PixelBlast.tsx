@@ -47,6 +47,7 @@ type PixelBlastProps = {
   rippleSpeed?: number;
   liquidWobbleSpeed?: number;
   autoPauseOffscreen?: boolean;
+  maxPixelRatio?: number;
   speed?: number;
   transparent?: boolean;
   edgeFade?: number;
@@ -369,6 +370,7 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
   rippleSpeed = 0.3,
   liquidWobbleSpeed = 4.5,
   autoPauseOffscreen = true,
+  maxPixelRatio = 2,
   speed = 0.5,
   transparent = true,
   edgeFade = 0.5,
@@ -414,6 +416,21 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
   } | null>(null);
   const prevConfigRef = useRef<ReinitConfig | null>(null);
   const [recovery, setRecovery] = useState(0);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || !autoPauseOffscreen) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        visibilityRef.current.visible = entry.isIntersecting;
+      },
+      { threshold: 0 },
+    );
+    io.observe(container);
+    return () => io.disconnect();
+  }, [autoPauseOffscreen]);
+
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -451,7 +468,7 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
       });
       renderer.domElement.style.width = '100%';
       renderer.domElement.style.height = '100%';
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxPixelRatio));
       container.appendChild(renderer.domElement);
       if (transparent) renderer.setClearAlpha(0);
       else renderer.setClearColor(0x000000, 1);
@@ -708,6 +725,7 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
     liquidRadius,
     liquidWobbleSpeed,
     autoPauseOffscreen,
+    maxPixelRatio,
     variant,
     color,
     speed,
