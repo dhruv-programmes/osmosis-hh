@@ -211,4 +211,45 @@
     min-height: 2.75rem;
     min-width: 2.75rem;
   }
+
+  /* Skip paint for below-fold lazy sections until near viewport */
+  .hh-deferred-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 720px;
+  }
+
+  .hh-shiny-text {
+    background-image: linear-gradient(
+      112deg,
+      #ef4444 0%,
+      #81ba2c 22%,
+      #ffffff 38%,
+      #3b82f6 52%,
+      #a8d95a 68%,
+      #81ba2c 84%,
+      #ef4444 100%
+    );
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: hh-shiny-text 9s linear infinite;
+    filter: drop-shadow(0 0 18px rgba(129, 186, 44, 0.22));
+  }
+
+  @keyframes hh-shiny-text {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 220% 50%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hh-shiny-text {
+      animation: none;
+      background-position: 40% 50%;
+    }
+  }
 }

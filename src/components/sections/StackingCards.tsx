@@ -1,11 +1,11 @@
 import { media } from "@/lib/breakpoints";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ComponentType } from "react";
 import { useScroll } from "motion/react";
-import PixelBlast from "../PixelBlast";
 import {
   PIXEL_DUST_STACKING,
 } from "../pixel/pixelDustConfig";
 import { StackingCard } from "../StackingCard";
+import type PixelBlastComponent from "../PixelBlast";
 
 const projects = [
   {
@@ -55,11 +55,68 @@ const projects = [
   },
 ];
 
-function getStackingDustConfig() {
+function getStackingDustConfig(): typeof PIXEL_DUST_STACKING | null {
   if (typeof window === "undefined") return PIXEL_DUST_STACKING;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return null;
   if (window.matchMedia(media.maxMd).matches) return null;
   return PIXEL_DUST_STACKING;
+}
+
+function DeferredPixelBlast({
+  config,
+  className,
+}: {
+  config: typeof PIXEL_DUST_STACKING;
+  className: string;
+}) {
+  const hostRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+  const [PixelBlast, setPixelBlast] = useState<typeof PixelBlastComponent | null>(
+    null,
+  );
+
+  useEffect(() => {
+    const el = hostRef.current;
+    if (!el) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setInView(true);
+      },
+      { rootMargin: "240px 0px", threshold: 0 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!inView) return;
+    import("../PixelBlast").then((mod) => setPixelBlast(() => mod.default));
+  }, [inView]);
+
+  const Blast = PixelBlast as ComponentType<
+    typeof PIXEL_DUST_STACKING & {
+      liquid?: boolean;
+      transparent?: boolean;
+      autoPauseOffscreen?: boolean;
+      className?: string;
+    }
+  >;
+
+  return (
+    <div ref={hostRef} className={className}>
+      {Blast ? (
+        <Blast
+          key={`stacking-${config.variant}-${config.patternDensity}`}
+          {...config}
+          liquid={false}
+          transparent={false}
+          autoPauseOffscreen
+          className="h-full w-full"
+        />
+      ) : null}
+    </div>
+  );
 }
 
 export default function StackingCards() {
@@ -89,12 +146,8 @@ export default function StackingCards() {
     <section ref={container} id="about" className="relative w-full text-white">
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden>
         {dustConfig ? (
-          <PixelBlast
-            key={`stacking-${dustConfig.variant}-${dustConfig.patternDensity}`}
-            {...dustConfig}
-            liquid={false}
-            transparent={false}
-            autoPauseOffscreen
+          <DeferredPixelBlast
+            config={dustConfig}
             className="h-full w-full"
           />
         ) : (
@@ -104,7 +157,7 @@ export default function StackingCards() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_8%,#020617_88%)]" />
       </div>
 
-      <div className="relative z-10">
+      <div className="relative z-10 max-md:px-[var(--section-px)] max-md:pb-10 max-md:pt-6">
         {projects.map((project, i) => {
           const targetScale = 1 - (projects.length - i) * 0.05;
 

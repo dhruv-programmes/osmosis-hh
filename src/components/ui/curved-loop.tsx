@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
-import {
-  useEffect,
+import { breakpoints } from "@/lib/breakpoints";
+import {  useEffect,
   useId,
   useMemo,
   useRef,
@@ -41,13 +41,15 @@ export default function CurvedLoop({
   const [spacing, setSpacing] = useState(0);
   const [offset, setOffset] = useState(0);
   const [dragging, setDragging] = useState(false);
+  const [fontSizeVb, setFontSizeVb] = useState(112);
   const uid = useId();
   const pathId = `curve-${uid.replace(/:/g, "")}`;
-  const pathBaseline = 36;
+  const pathBaseline = 28;
   const controlY = pathBaseline + curveAmount;
-  const viewBoxHeight = Math.ceil(controlY + 28);
+  /** Deepest point on the quadratic path + room for glyph descenders. */
+  const pathLowY = pathBaseline + curveAmount * 0.52;
+  const viewBoxHeight = Math.ceil(pathLowY + fontSizeVb * 0.9);
   const pathD = `M-100,${pathBaseline} Q500,${controlY} 1540,${pathBaseline}`;
-
   const dragRef = useRef(false);
   const lastXRef = useRef(0);
   const dirRef = useRef<"left" | "right">(direction);
@@ -64,11 +66,28 @@ export default function CurvedLoop({
   const ready = spacing > 0;
   const canInteract = interactive && !reducedMotion;
   const animationSpeed = reducedMotion ? 0 : speed;
+  /** Mobile glyphs are larger in viewBox units — scale px/frame so loop time matches desktop. */
+  const REFERENCE_FONT_SIZE = 52;
+  const effectiveSpeed = animationSpeed * (fontSizeVb / REFERENCE_FONT_SIZE);
+
+  useEffect(() => {
+    const updateFontSize = () => {
+      const vw = window.innerWidth;
+      if (vw < breakpoints.md) {
+        setFontSizeVb(Math.min(132, Math.max(108, vw * 0.34)));
+      } else {
+        setFontSizeVb(Math.min(58, Math.max(44, vw * 0.042)));
+      }
+    };
+
+    updateFontSize();
+    window.addEventListener("resize", updateFontSize);
+    return () => window.removeEventListener("resize", updateFontSize);
+  }, []);
 
   useEffect(() => {
     if (measureRef.current) setSpacing(measureRef.current.getComputedTextLength());
-  }, [text, className, svgClassName]);
-
+  }, [text, className, svgClassName, fontSizeVb]);
   useEffect(() => {
     if (!spacing) return;
     if (textPathRef.current) {
@@ -98,7 +117,7 @@ export default function CurvedLoop({
     let frame = 0;
     const step = () => {
       if (isVisibleRef.current && !dragRef.current && textPathRef.current) {
-        const delta = dirRef.current === "right" ? animationSpeed : -animationSpeed;
+        const delta = dirRef.current === "right" ? effectiveSpeed : -effectiveSpeed;
         const currentOffset = parseFloat(textPathRef.current.getAttribute("startOffset") || "0");
         let newOffset = currentOffset + delta;
         const wrapPoint = spacing;
@@ -112,7 +131,7 @@ export default function CurvedLoop({
 
     frame = requestAnimationFrame(step);
     return () => cancelAnimationFrame(frame);
-  }, [spacing, animationSpeed, ready]);
+  }, [spacing, effectiveSpeed, ready]);
 
   const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
     if (!canInteract) return;
@@ -149,8 +168,14 @@ export default function CurvedLoop({
   return (
     <div
       ref={containerRef}
-      className={cn("flex w-full items-start justify-center overflow-x-clip", containerClassName)}
-      style={{ visibility: ready ? "visible" : "hidden", cursor: cursorStyle }}
+      className={cn(
+        "flex w-full items-start justify-center overflow-x-clip overflow-y-visible",
+        containerClassName,
+      )}
+      style={{
+        visibility: ready ? "visible" : "hidden",
+        cursor: cursorStyle,
+      }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={endDrag}
@@ -158,7 +183,7 @@ export default function CurvedLoop({
     >
       <svg
         className={cn(
-          "block w-full overflow-visible text-[clamp(2rem,5.5vw,3.5rem)] leading-none font-semibold uppercase select-none",
+          "block w-full overflow-visible leading-none font-bold uppercase select-none",
           svgClassName,
         )}
         style={{ aspectRatio: `1440 / ${viewBoxHeight}` }}
@@ -170,6 +195,7 @@ export default function CurvedLoop({
           ref={measureRef}
           xmlSpace="preserve"
           className={className}
+          fontSize={fontSizeVb}
           style={{ visibility: "hidden", opacity: 0, pointerEvents: "none" }}
         >
           {text}
@@ -178,8 +204,7 @@ export default function CurvedLoop({
           <path id={pathId} d={pathD} fill="none" stroke="transparent" />
         </defs>
         {ready ? (
-          <text xmlSpace="preserve" className={className}>
-            <textPath
+          <text xmlSpace="preserve" className={className} fontSize={fontSizeVb}>            <textPath
               ref={textPathRef}
               href={`#${pathId}`}
               startOffset={`${offset}px`}

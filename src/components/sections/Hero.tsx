@@ -91,7 +91,7 @@ export default function Hero() {
         <Grainient {...heroGrainient} className="absolute inset-0" />
         <img
           src="/house.png"
-          alt=""
+          alt="Osmosis Hacker House at Zo House, Whitefield, Bangalore"
           width={1920}
           height={1280}
           decoding="async"
@@ -106,10 +106,13 @@ export default function Hero() {
         className="relative z-10 flex flex-1 flex-col items-center justify-center px-[var(--section-px)] text-center"
       >
         <h1 ref={titleRef} className="mt-4 w-full sm:mt-6">
-          <MorphingText
-            texts={["Osmosis", "Hacker House"]}
-            className="font-serif h-auto min-h-[1.1em] w-full max-w-4xl text-[length:var(--text-display)] leading-[0.92] font-normal tracking-tight text-[#fafafa] drop-shadow-[0_4px_32px_rgba(0,0,0,0.6)]"
-          />
+          <span className="sr-only">Osmosis Hacker House</span>
+          <span aria-hidden>
+            <MorphingText
+              texts={["Osmosis", "Hacker House"]}
+              className="font-serif h-auto min-h-[1.1em] w-full max-w-4xl text-[length:var(--text-display)] leading-[0.92] font-normal tracking-tight text-[#fafafa] drop-shadow-[0_4px_32px_rgba(0,0,0,0.6)]"
+            />
+          </span>
         </h1>
 
         <div ref={ctaRef} className="hero-cta mt-8 sm:mt-10">

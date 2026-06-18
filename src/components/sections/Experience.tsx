@@ -221,7 +221,7 @@ export default function Experience() {
       id="schedule"
       ref={sectionRef}
       className="relative z-10 border-t-0"
-      innerClassName="!pt-[clamp(2.25rem,1.5rem+3vw,3.75rem)]"
+      innerClassName="!pt-6 sm:!pt-8"
     >
       <SectionHeader
         className="exp-header mx-auto max-w-2xl text-center"

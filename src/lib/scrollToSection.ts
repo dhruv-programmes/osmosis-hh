@@ -46,9 +46,7 @@ export function scrollToSection(
   if (lenisScrollHandler) {
     lenisScrollHandler(el, { offset: -getNavOffset(), immediate });
   } else {
-    const offset = getNavOffset();
-    const top = Math.max(0, el.getBoundingClientRect().top + window.scrollY - offset);
-    window.scrollTo({ top, behavior });
+    el.scrollIntoView({ behavior, block: "start" });
   }
 
   window.history.pushState(null, "", `#${id}`);

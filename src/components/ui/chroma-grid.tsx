@@ -132,6 +132,8 @@ export default function ChromaGrid({
               <img
                 src={c.image}
                 alt={c.title}
+                width={400}
+                height={500}
                 loading="lazy"
                 className="h-full w-full object-cover object-top"
               />

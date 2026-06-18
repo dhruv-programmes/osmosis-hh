@@ -1,17 +1,19 @@
-import { useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef } from "react";
 import PixelDust from "./PixelDust";
 import { PixelDustProvider } from "./pixel/PixelDustContext";
 import Navbar from "./Navbar";
 import CurvedLoopMarquee from "./sections/CurvedLoopMarquee";
 import Experience from "./sections/Experience";
 import Hero from "./sections/Hero";
-import Mentors from "./sections/Mentors";
-import RegisterCta from "./sections/RegisterCta";
-import Footer from "./sections/Footer";
-import StackingCards from "./sections/StackingCards";
-import Venue from "./sections/Venue";
+import HeroMission from "./sections/HeroMission";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 import { ScrollTrigger } from "@/lib/gsap";
+
+const Mentors = lazy(() => import("./sections/Mentors"));
+const Venue = lazy(() => import("./sections/Venue"));
+const StackingCards = lazy(() => import("./sections/StackingCards"));
+const RegisterCta = lazy(() => import("./sections/RegisterCta"));
+const Footer = lazy(() => import("./sections/Footer"));
 
 export default function EventLanding() {
   const mainRef = useRef<HTMLElement>(null);
@@ -31,13 +33,34 @@ export default function EventLanding() {
 
         <main ref={mainRef} className="relative z-10">
           <Hero />
+          <HeroMission />
           <CurvedLoopMarquee />
           <Experience />
-          <Mentors />
-          <Venue />
-          <StackingCards />
-          <RegisterCta />
-          <Footer />
+          <Suspense fallback={null}>
+            <div className="hh-deferred-section">
+              <Mentors />
+            </div>
+          </Suspense>
+          <Suspense fallback={null}>
+            <div className="hh-deferred-section">
+              <Venue />
+            </div>
+          </Suspense>
+          <Suspense fallback={null}>
+            <div className="hh-deferred-section">
+              <StackingCards />
+            </div>
+          </Suspense>
+          <Suspense fallback={null}>
+            <div className="hh-deferred-section">
+              <RegisterCta />
+            </div>
+          </Suspense>
+          <Suspense fallback={null}>
+            <div className="hh-deferred-section">
+              <Footer />
+            </div>
+          </Suspense>
         </main>
       </div>
     </PixelDustProvider>

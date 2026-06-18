@@ -1,9 +1,9 @@
 import { media } from "@/lib/breakpoints";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ComponentType } from "react";
 import { createPortal } from "react-dom";
-import PixelBlast from "./PixelBlast";
 import { PIXEL_DUST_DEFAULTS } from "./pixel/pixelDustConfig";
 import { usePixelDustCanvas } from "./pixel/PixelDustContext";
+import type PixelBlastComponent from "./PixelBlast";
 
 function getDesktopDustConfig() {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -47,6 +47,10 @@ export default function PixelDust() {
   const [mounted, setMounted] = useState(false);
   const [config, setConfig] = useState(getDesktopDustConfig);
   const [mobileFallback, setMobileFallback] = useState(useMobileDustFallback);
+  const [idleReady, setIdleReady] = useState(false);
+  const [PixelBlast, setPixelBlast] = useState<typeof PixelBlastComponent | null>(
+    null,
+  );
 
   useEffect(() => {
     setMounted(true);
@@ -70,6 +74,24 @@ export default function PixelDust() {
   }, []);
 
   useEffect(() => {
+    if (!config) {
+      setIdleReady(false);
+      return;
+    }
+
+    const id = window.requestIdleCallback(() => setIdleReady(true), {
+      timeout: 2000,
+    });
+    return () => window.cancelIdleCallback(id);
+  }, [config]);
+
+  useEffect(() => {
+    if (!config || !idleReady) return;
+
+    import("./PixelBlast").then((mod) => setPixelBlast(() => mod.default));
+  }, [config, idleReady]);
+
+  useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
@@ -86,9 +108,19 @@ export default function PixelDust() {
       observer.disconnect();
       setCanvas(null);
     };
-  }, [setCanvas, config]);
+  }, [setCanvas, config, PixelBlast]);
 
   if (!mounted) return null;
+
+  const Blast = PixelBlast as ComponentType<
+    typeof PIXEL_DUST_DEFAULTS & {
+      liquid?: boolean;
+      transparent?: boolean;
+      autoPauseOffscreen?: boolean;
+      maxPixelRatio?: number;
+      className?: string;
+    }
+  >;
 
   return createPortal(
     <div
@@ -96,9 +128,9 @@ export default function PixelDust() {
       className="pointer-events-none fixed inset-0 z-[1]"
       aria-hidden
     >
-      {config ? (
+      {config && Blast ? (
         <div className="absolute inset-0">
-          <PixelBlast
+          <Blast
             key={config.patternDensity}
             {...config}
             liquid={false}

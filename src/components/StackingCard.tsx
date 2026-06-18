@@ -48,6 +48,23 @@ function DescriptionCopy({ text }: { text: string }) {
   );
 }
 
+import type { MouseEvent } from "react";
+import { scrollToSection } from "@/lib/scrollToSection";
+
+function handleSectionLinkClick(
+  event: MouseEvent<HTMLAnchorElement>,
+  href: string,
+) {
+  if (!href.startsWith("#")) return;
+
+  event.preventDefault();
+  event.stopPropagation();
+
+  requestAnimationFrame(() => {
+    scrollToSection(href);
+  });
+}
+
 function TextPanel({
   description,
   cta,
@@ -58,15 +75,16 @@ function TextPanel({
   href: string;
 }) {
   return (
-    <div className="flex w-full flex-col justify-center md:w-[44%]">
+    <div className="relative z-10 flex w-full flex-col justify-center md:w-[44%]">
       <div className="rounded-2xl border border-white/10 bg-[#080809]/76 p-5 backdrop-blur-xl max-md:bg-[#080809]/92 max-md:backdrop-blur-none sm:p-6 lg:p-7">
         <DescriptionCopy text={description} />
 
         <a
           href={href}
+          onClick={(event) => handleSectionLinkClick(event, href)}
           className={cn(
             sans,
-            "group mt-6 inline-flex items-center gap-2.5 text-[0.9875rem] font-semibold tracking-[-0.01em] text-[#e8f5d6] transition-colors hover:text-white sm:text-base",
+            "touch-target group relative z-10 mt-6 inline-flex items-center gap-2.5 text-[0.9875rem] font-semibold tracking-[-0.01em] text-[#e8f5d6] transition-colors hover:text-white sm:text-base",
           )}
         >
           <span className="underline decoration-[#a8d95a]/70 underline-offset-[5px] group-hover:decoration-white">
@@ -94,10 +112,12 @@ function TextPanel({
 
 function ImagePanel({
   url,
+  title,
   imageScale,
   active,
 }: {
   url: string;
+  title: string;
   imageScale: MotionValue<number>;
   active: boolean;
 }) {
@@ -110,7 +130,14 @@ function ImagePanel({
       style={{ backfaceVisibility: "hidden", transform: "translate3d(0,0,0)" }}
     >
       <motion.div className="h-full w-full" style={{ scale: imageScale }}>
-        <img src={url} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <img
+          src={url}
+          alt={title}
+          width={500}
+          height={500}
+          loading="lazy"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
       </motion.div>
     </div>
   );
@@ -150,7 +177,7 @@ export function StackingCard({
   );
   const scale = useTransform(progress, range, [1, targetScale]);
 
-  const cardTop = isMobile ? `calc(-2vh + ${i * 12}px)` : `calc(-5vh + ${i * 25}px)`;
+  const cardTop = isMobile ? i * 12 : `calc(-5vh + ${i * 25}px)`;
 
   useEffect(() => {
     const el = container.current;
@@ -167,17 +194,26 @@ export function StackingCard({
   return (
     <div
       ref={container}
-      className="sticky top-0 flex h-screen items-center justify-center px-4 max-md:min-h-svh max-md:py-6"
+      className={cn(
+        "sticky flex w-full justify-center items-center px-3 sm:px-4",
+        "top-[calc(max(0.75rem,var(--safe-top))+3.25rem)] min-h-[calc(100dvh-max(0.75rem,var(--safe-top))-3.25rem)]",
+        "md:top-0 md:min-h-0 md:h-screen",
+      )}
     >
       <motion.article
         style={{
           backgroundColor: color,
-          scale,
+          scale: reduceMotion ? 1 : scale,
           top: cardTop,
+          zIndex: i + 1,
           backfaceVisibility: "hidden",
           willChange: active ? "transform" : "auto",
         }}
-        className="relative -top-[25%] flex h-[min(520px,78vh)] w-full max-w-5xl origin-top flex-col rounded-[28px] p-4 shadow-[0_24px_80px_rgba(0,0,0,0.35)] max-md:h-auto max-md:min-h-0 max-md:max-h-[min(560px,88dvh)] max-md:-top-[8%] sm:p-6 lg:p-9"
+        className={cn(
+          "relative flex w-full max-w-5xl origin-top flex-col rounded-[28px] p-4 shadow-[0_24px_80px_rgba(0,0,0,0.35)] sm:p-6 lg:p-9",
+          "h-auto max-h-[min(560px,calc(100dvh-max(0.75rem,var(--safe-top))-4.5rem))]",
+          "md:-top-[25%] md:h-[min(520px,78vh)] md:max-h-none",
+        )}
       >
         <h2
           className={cn(
@@ -196,7 +232,7 @@ export function StackingCard({
           )}
         >
           <TextPanel description={description} cta={cta} href={href} />
-          <ImagePanel url={url} imageScale={imageScale} active={active} />
+          <ImagePanel url={url} title={title} imageScale={imageScale} active={active} />
         </div>
       </motion.article>
     </div>

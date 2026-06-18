@@ -1,6 +1,8 @@
 /** Osmosis Hacker House palette for Grainient backgrounds */
 export const GRAINIENT_COLORS = {
   accent: "#81ba2c",
+  accentLight: "#a8d95a",
+  accentDark: "#5a8f1f",
   dark: "#080809",
   mutedGreen: "#1a2e14",
 } as const;

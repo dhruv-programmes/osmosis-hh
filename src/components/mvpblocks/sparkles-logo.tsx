@@ -1,8 +1,14 @@
-import type { ReactNode } from "react";
-import { SparklesCore } from "@/components/ui/sparkles";
+import { lazy, Suspense, useEffect, useRef, useState, type ReactNode } from "react";
+import { useReducedMotion } from "motion/react";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { media } from "@/lib/breakpoints";
 import { cn } from "@/lib/utils";
+
+const SparklesCore = lazy(() =>
+  import("@/components/ui/sparkles").then((mod) => ({
+    default: mod.SparklesCore,
+  })),
+);
 
 export interface PartnerLogo {
   name: string;
@@ -39,12 +45,31 @@ export default function SparklesLogoWall({
   subline,
 }: SparklesLogoWallProps) {
   const isMobile = useMediaQuery(media.maxMd);
+  const reduceMotion = useReducedMotion();
+  const sparklesHostRef = useRef<HTMLDivElement>(null);
+  const [sparklesReady, setSparklesReady] = useState(false);
   const colClass =
     logos.length === 3
       ? "grid-cols-2 sm:grid-cols-3"
       : logos.length <= 4
         ? "grid-cols-2 sm:grid-cols-4"
         : "grid-cols-2 sm:grid-cols-3 md:grid-cols-5";
+
+  useEffect(() => {
+    if (reduceMotion) return;
+
+    const el = sparklesHostRef.current;
+    if (!el) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setSparklesReady(true);
+      },
+      { rootMargin: "120px 0px", threshold: 0 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [reduceMotion]);
 
   return (
     <div className={cn("relative w-full overflow-hidden", className)}>
@@ -108,19 +133,24 @@ export default function SparklesLogoWall({
       </div>
 
       <div
+        ref={sparklesHostRef}
         aria-hidden
         className="pointer-events-none relative -mt-4 h-10 w-full overflow-hidden mask-[radial-gradient(50%_50%,white,transparent)] sm:-mt-5 sm:h-12"
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_center,rgba(129,186,44,0.22),transparent_72%)]" />
         <div className="absolute left-1/2 top-[42%] aspect-[1/0.65] w-[200%] -translate-x-1/2 rounded-[100%] border-t border-[#81ba2c30] shadow-[0_-10px_36px_rgba(129,186,44,0.1)]" />
-        <SparklesCore
-          id="partner-sparkles"
-          background="transparent"
-          particleDensity={isMobile ? 120 : 240}
-          fpsLimit={isMobile ? 30 : 60}
-          particleColor="#c8e6a0"
-          className="absolute inset-x-0 bottom-0 h-full w-full mask-[radial-gradient(50%_50%,white,transparent_85%)]"
-        />
+        {sparklesReady && !reduceMotion ? (
+          <Suspense fallback={null}>
+            <SparklesCore
+              id="partner-sparkles"
+              background="transparent"
+              particleDensity={isMobile ? 120 : 240}
+              fpsLimit={isMobile ? 30 : 60}
+              particleColor="#c8e6a0"
+              className="absolute inset-x-0 bottom-0 h-full w-full mask-[radial-gradient(50%_50%,white,transparent_85%)]"
+            />
+          </Suspense>
+        ) : null}
       </div>
     </div>
   );
