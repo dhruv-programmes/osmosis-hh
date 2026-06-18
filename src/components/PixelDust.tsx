@@ -1,3 +1,4 @@
+import { media } from "@/lib/breakpoints";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import PixelBlast from "./PixelBlast";
@@ -12,7 +13,7 @@ function getPixelDustConfig() {
     return null;
   }
 
-  return window.matchMedia("(max-width: 767px)").matches
+  return window.matchMedia(media.maxMd).matches
     ? PIXEL_DUST_MOBILE
     : PIXEL_DUST_DEFAULTS;
 }
@@ -29,7 +30,7 @@ export default function PixelDust() {
 
   useEffect(() => {
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const mobile = window.matchMedia("(max-width: 767px)");
+    const mobile = window.matchMedia(media.maxMd);
 
     const update = () => setConfig(getPixelDustConfig());
 

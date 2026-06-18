@@ -108,7 +108,7 @@ export default function ChromaGrid({
           key={i}
           onMouseMove={handleCardMove}
           onClick={() => handleCardClick(c.url)}
-          className="group relative flex h-[440px] w-[min(300px,100%)] cursor-pointer flex-col overflow-hidden rounded-[20px] transition-colors duration-300"
+          className="group relative flex h-auto min-h-0 w-full max-w-[300px] max-md:max-w-none cursor-pointer flex-col overflow-hidden rounded-[20px] transition-colors duration-300"
           style={
             {
               "--card-border": c.borderColor || "transparent",
@@ -125,7 +125,7 @@ export default function ChromaGrid({
             }}
           />
           <div className="relative z-10 shrink-0 p-2.5 pb-0">
-            <div className="h-[300px] overflow-hidden rounded-[10px] bg-black">
+            <div className="aspect-[4/5] w-full overflow-hidden rounded-[10px] bg-black max-md:aspect-[3/4]">
               <img
                 src={c.image}
                 alt={c.title}

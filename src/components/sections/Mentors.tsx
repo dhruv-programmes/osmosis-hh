@@ -1,9 +1,10 @@
 import { useGSAP } from "@gsap/react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Section from "../Section";
 import SectionHeader from "../SectionHeader";
 import ChromaGrid, { type ChromaItem } from "@/components/ui/chroma-grid";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { media } from "@/lib/breakpoints";
 
 const mentors: ChromaItem[] = [
   {
@@ -29,13 +30,31 @@ const mentors: ChromaItem[] = [
   },
 ];
 
+function useSpotlightRadius() {
+  const [radius, setRadius] = useState(280);
+
+  useEffect(() => {
+    const update = () => {
+      const vw = window.innerWidth;
+      setRadius(Math.min(280, Math.max(140, vw * 0.4)));
+    };
+
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  return radius;
+}
+
 export default function Mentors() {
   const sectionRef = useRef<HTMLElement>(null);
+  const spotlightRadius = useSpotlightRadius();
 
   useGSAP(
     () => {
       ScrollTrigger.matchMedia({
-        "(min-width: 768px)": () => {
+        [media.md]: () => {
           gsap.from(".mentors-header", {
             scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
             y: 50,
@@ -44,7 +63,7 @@ export default function Mentors() {
             ease: "power3.out",
           });
         },
-        "(max-width: 767px)": () => {
+        [media.maxMd]: () => {
           gsap.from(".mentors-header", {
             scrollTrigger: { trigger: sectionRef.current, start: "top 82%" },
             y: 24,
@@ -72,10 +91,10 @@ export default function Mentors() {
         description="Industry leaders on hand for feedback, direction, and the occasional hard truth."
       />
 
-      <div className="relative min-h-[460px]">
+      <div className="relative">
         <ChromaGrid
           items={mentors}
-          radius={280}
+          radius={spotlightRadius}
           damping={0.45}
           fadeOut={0.6}
           ease="power3.out"

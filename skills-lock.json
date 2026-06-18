@@ -31,6 +31,12 @@
       "skillPath": "plugins/ui-design/skills/responsive-design/SKILL.md",
       "computedHash": "155eff4b1bc8d867ae6bea9900c485ab1081de0b4873c1900adb66bf62466aed"
     },
+    "scroll-experience": {
+      "source": "sickn33/antigravity-awesome-skills",
+      "sourceType": "github",
+      "skillPath": "skills/scroll-experience/SKILL.md",
+      "computedHash": "aec5ceb7847b4833989da279f21a1743e41086a7e47398f54e9996efb3ed8c99"
+    },
     "ui-animation": {
       "source": "mblode/agent-skills",
       "sourceType": "github",

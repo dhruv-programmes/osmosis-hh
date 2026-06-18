@@ -6,6 +6,7 @@ export interface PartnerLogo {
   name: string;
   src: string;
   href?: string;
+  featured?: boolean;
 }
 
 interface SparklesLogoWallProps {
@@ -64,7 +65,7 @@ export default function SparklesLogoWall({
 
         <ul
           className={cn(
-            "mt-5 grid w-full items-center justify-items-center gap-x-8 gap-y-6 sm:mt-6 sm:gap-x-10 sm:gap-y-7",
+            "mt-5 grid w-full items-center justify-items-center gap-x-6 gap-y-5 sm:mt-6 sm:gap-x-8 sm:gap-y-6",
             colClass,
           )}
         >
@@ -74,7 +75,12 @@ export default function SparklesLogoWall({
                 src={logo.src}
                 alt={logo.name}
                 loading="lazy"
-                className="h-11 w-auto max-w-[min(160px,34vw)] object-contain opacity-90 transition-opacity duration-300 hover:opacity-100 sm:h-12 md:h-14 md:max-w-[min(200px,28vw)]"
+                className={cn(
+                  "w-auto object-contain opacity-90 transition-opacity duration-300 hover:opacity-100",
+                  logo.featured
+                    ? "h-14 max-w-[min(190px,38vw)] sm:h-[3.25rem] md:h-16 md:max-w-[min(230px,32vw)]"
+                    : "h-11 max-w-[min(160px,34vw)] sm:h-12 md:h-14 md:max-w-[min(200px,28vw)]",
+                )}
               />
             );
 

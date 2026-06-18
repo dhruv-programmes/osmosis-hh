@@ -43,7 +43,10 @@ export default function CurvedLoop({
   const [dragging, setDragging] = useState(false);
   const uid = useId();
   const pathId = `curve-${uid.replace(/:/g, "")}`;
-  const pathD = `M-100,40 Q500,${40 + curveAmount} 1540,40`;
+  const pathBaseline = 36;
+  const controlY = pathBaseline + curveAmount;
+  const viewBoxHeight = Math.ceil(controlY + 28);
+  const pathD = `M-100,${pathBaseline} Q500,${controlY} 1540,${pathBaseline}`;
 
   const dragRef = useRef(false);
   const lastXRef = useRef(0);
@@ -129,7 +132,7 @@ export default function CurvedLoop({
 
   return (
     <div
-      className={cn("flex w-full items-center justify-center", containerClassName)}
+      className={cn("flex w-full items-start justify-center overflow-x-clip", containerClassName)}
       style={{ visibility: ready ? "visible" : "hidden", cursor: cursorStyle }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
@@ -138,10 +141,12 @@ export default function CurvedLoop({
     >
       <svg
         className={cn(
-          "block aspect-[100/9] w-full overflow-visible text-[clamp(2rem,5.5vw,3.5rem)] leading-none font-semibold uppercase select-none",
+          "block w-full overflow-visible text-[clamp(2rem,5.5vw,3.5rem)] leading-none font-semibold uppercase select-none",
           svgClassName,
         )}
-        viewBox="0 0 1440 120"
+        style={{ aspectRatio: `1440 / ${viewBoxHeight}` }}
+        viewBox={`0 0 1440 ${viewBoxHeight}`}
+        preserveAspectRatio="xMidYMin meet"
         aria-hidden
       >
         <text

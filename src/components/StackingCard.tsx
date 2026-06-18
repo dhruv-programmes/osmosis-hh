@@ -1,5 +1,7 @@
-import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
 import { useMemo, useRef } from "react";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { media } from "@/lib/breakpoints";
 import { cn } from "@/lib/utils";
 
 export interface StackingCardProps {
@@ -50,7 +52,7 @@ function TextPanel({
   href: string;
 }) {
   return (
-    <div className="flex w-[46%] flex-col justify-center sm:w-[44%]">
+    <div className="flex w-full flex-col justify-center md:w-[44%]">
       <div className="rounded-2xl border border-white/10 bg-[#080809]/76 p-5 backdrop-blur-xl sm:p-6 lg:p-7">
         <DescriptionCopy text={description} />
 
@@ -92,7 +94,7 @@ function ImagePanel({
   imageScale: MotionValue<number>;
 }) {
   return (
-    <div className="relative min-h-[220px] flex-1 overflow-hidden rounded-2xl shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)]">
+    <div className="relative min-h-[220px] flex-1 overflow-hidden rounded-2xl shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)] max-md:aspect-[16/10] max-md:min-h-[180px] max-md:w-full max-md:flex-none">
       <motion.div className="h-full w-full" style={{ scale: imageScale }}>
         <img src={url} alt="" className="absolute inset-0 h-full w-full object-cover" />
       </motion.div>
@@ -114,24 +116,36 @@ export function StackingCard({
 }: StackingCardProps) {
   const container = useRef<HTMLDivElement>(null);
   const textOnLeft = i % 2 === 0;
+  const isMobile = useMediaQuery(media.maxMd);
+  const reduceMotion = useReducedMotion();
 
   const { scrollYProgress } = useScroll({
     target: container,
     offset: ["start end", "start start"],
   });
 
-  const imageScale = useTransform(scrollYProgress, [0, 1], [2, 1]);
+  const parallaxRange: [number, number] = reduceMotion
+    ? [1, 1]
+    : isMobile
+      ? [1.15, 1]
+      : [2, 1];
+  const imageScale = useTransform(scrollYProgress, [0, 1], parallaxRange);
   const scale = useTransform(progress, range, [1, targetScale]);
 
+  const cardTop = isMobile ? `calc(-2vh + ${i * 12}px)` : `calc(-5vh + ${i * 25}px)`;
+
   return (
-    <div ref={container} className="sticky top-0 flex h-screen items-center justify-center px-4">
+    <div
+      ref={container}
+      className="sticky top-0 flex h-screen items-center justify-center px-4 max-md:min-h-svh max-md:py-6"
+    >
       <motion.article
         style={{
           backgroundColor: color,
           scale,
-          top: `calc(-5vh + ${i * 25}px)`,
+          top: cardTop,
         }}
-        className="relative -top-[25%] flex h-[min(520px,78vh)] w-full max-w-5xl origin-top flex-col rounded-[28px] p-4 shadow-[0_24px_80px_rgba(0,0,0,0.35)] sm:p-6 lg:p-9"
+        className="relative -top-[25%] flex h-[min(520px,78vh)] w-full max-w-5xl origin-top flex-col rounded-[28px] p-4 shadow-[0_24px_80px_rgba(0,0,0,0.35)] max-md:h-auto max-md:min-h-0 max-md:max-h-[min(560px,88dvh)] max-md:-top-[8%] sm:p-6 lg:p-9"
       >
         <h2
           className={cn(
@@ -145,7 +159,8 @@ export function StackingCard({
         <div
           className={cn(
             "mt-5 flex min-h-0 flex-1 gap-5 sm:mt-6 sm:gap-7 lg:gap-9",
-            !textOnLeft && "flex-row-reverse",
+            "max-md:flex-col",
+            !textOnLeft && "max-md:flex-col-reverse md:flex-row-reverse",
           )}
         >
           <TextPanel description={description} cta={cta} href={href} />

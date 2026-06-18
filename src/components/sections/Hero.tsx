@@ -6,6 +6,7 @@ import Sponsors from "./Sponsors";
 import { MorphingText } from "@/components/ui/morphing-text";
 import { heroGrainient } from "../grainientConfig";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { media } from "@/lib/breakpoints";
 
 export default function Hero() {
   const containerRef = useRef<HTMLElement>(null);
@@ -50,7 +51,7 @@ export default function Hero() {
         );
 
       ScrollTrigger.matchMedia({
-        "(min-width: 768px)": () => {
+        [media.md]: () => {
           gsap.to(contentRef.current, {
             y: -36,
             opacity: 0,
@@ -63,7 +64,7 @@ export default function Hero() {
             },
           });
         },
-        "(max-width: 767px)": () => {
+        [media.maxMd]: () => {
           gsap.to(contentRef.current, {
             y: -20,
             opacity: 0.4,

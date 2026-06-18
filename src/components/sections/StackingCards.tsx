@@ -1,3 +1,4 @@
+import { media } from "@/lib/breakpoints";
 import { useEffect, useRef, useState } from "react";
 import { useScroll } from "motion/react";
 import PixelBlast from "../PixelBlast";
@@ -58,7 +59,7 @@ const projects = [
 function getStackingDustConfig() {
   if (typeof window === "undefined") return PIXEL_DUST_STACKING;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return null;
-  return window.matchMedia("(max-width: 767px)").matches
+  return window.matchMedia(media.maxMd).matches
     ? PIXEL_DUST_STACKING_MOBILE
     : PIXEL_DUST_STACKING;
 }
@@ -74,7 +75,7 @@ export default function StackingCards() {
 
   useEffect(() => {
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const mobile = window.matchMedia("(max-width: 767px)");
+    const mobile = window.matchMedia(media.maxMd);
 
     const update = () => setDustConfig(getStackingDustConfig());
 

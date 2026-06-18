@@ -131,7 +131,7 @@ export default function Footer() {
     "select-none text-center font-sans text-[clamp(4rem,19vw,13.5rem)] font-semibold uppercase leading-[0.82] tracking-[-0.045em]";
 
   const chromaVars = {
-    "--r": "220px",
+    "--r": "clamp(120px, 35vw, 220px)",
     "--x": "0px",
     "--y": "0px",
   } as CSSProperties;
@@ -164,7 +164,7 @@ export default function Footer() {
         onPointerLeave={handlePointerLeave}
       >
         <div className="pointer-events-none translate-y-[12%] sm:translate-y-[14%]">
-          <div className="relative mx-auto w-full max-w-[100vw] px-[var(--section-px)]">
+          <div className="relative mx-auto w-full px-[var(--section-px)]">
             {!reduceMotion ? (
               <div
                 aria-hidden

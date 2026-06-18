@@ -4,6 +4,7 @@ import Section from "../Section";
 import SectionHeader from "../SectionHeader";
 import SpotlightCard from "../SpotlightCard";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { media } from "@/lib/breakpoints";
 import { cn } from "@/lib/utils";
 
 type ScheduleItem = {
@@ -145,12 +146,12 @@ function ScheduleDayWidget({
         className,
       )}
     >
-      <header className="flex items-start justify-between gap-4 px-6 pt-6 pb-5 sm:px-7 sm:pt-7">
+      <header className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2 px-6 pt-6 pb-5 sm:px-7 sm:pt-7">
         <div>
           <p className="text-[11px] font-semibold tracking-[0.08em] text-[#8e8e93] uppercase">
             {day.dayLabel}
           </p>
-          <h3 className="mt-0.5 font-[family-name:'Geist_Variable',system-ui,sans-serif] text-[2rem] font-semibold tracking-[-0.045em] text-[#f5f5f7] sm:text-[2.125rem]">
+          <h3 className="mt-0.5 font-[family-name:'Geist_Variable',system-ui,sans-serif] text-[clamp(1.5rem,5vw,2.125rem)] font-semibold tracking-[-0.045em] text-[#f5f5f7]">
             {day.dateLabel}
           </h3>
         </div>
@@ -174,7 +175,7 @@ export default function Experience() {
   useGSAP(
     () => {
       ScrollTrigger.matchMedia({
-        "(min-width: 768px)": () => {
+        [media.md]: () => {
           gsap.from(".exp-header", {
             scrollTrigger: { trigger: sectionRef.current, start: "top 72%" },
             y: 32,
@@ -192,7 +193,7 @@ export default function Experience() {
             ease: "power3.out",
           });
         },
-        "(max-width: 767px)": () => {
+        [media.maxMd]: () => {
           gsap.from(".exp-header", {
             scrollTrigger: { trigger: sectionRef.current, start: "top 82%" },
             y: 20,
@@ -216,7 +217,12 @@ export default function Experience() {
   );
 
   return (
-    <Section id="schedule" ref={sectionRef}>
+    <Section
+      id="schedule"
+      ref={sectionRef}
+      className="relative z-10 border-t-0"
+      innerClassName="!pt-[clamp(2.25rem,1.5rem+3vw,3.75rem)]"
+    >
       <SectionHeader
         className="exp-header mx-auto max-w-2xl text-center"
         align="center"

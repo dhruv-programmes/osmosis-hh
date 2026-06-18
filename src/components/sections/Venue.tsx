@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/carousel";
 import { galleryImages } from "@/lib/venueGallery";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { media } from "@/lib/breakpoints";
 
 export default function Venue() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -20,7 +21,7 @@ export default function Venue() {
   useGSAP(
     () => {
       ScrollTrigger.matchMedia({
-        "(min-width: 768px)": () => {
+        [media.md]: () => {
           gsap.from(".venue-header", {
             scrollTrigger: { trigger: sectionRef.current, start: "top 72%" },
             y: 48,
@@ -37,7 +38,7 @@ export default function Venue() {
             delay: 0.08,
           });
         },
-        "(max-width: 767px)": () => {
+        [media.maxMd]: () => {
           gsap.from(".venue-header", {
             scrollTrigger: { trigger: sectionRef.current, start: "top 84%" },
             y: 24,
@@ -95,14 +96,14 @@ export default function Venue() {
 
             <SliderPrevButton
               aria-label="Previous slide"
-              className="absolute top-1/2 left-3 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-[#080809]/80 text-white backdrop-blur-sm transition-opacity disabled:opacity-30 sm:left-4"
+              className="absolute top-1/2 left-3 z-10 flex h-9 w-9 max-sm:touch-target max-sm:h-11 max-sm:w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-[#080809]/80 text-white backdrop-blur-sm transition-opacity disabled:opacity-30 sm:left-4"
             >
               <ChevronLeft className="h-4 w-4" />
             </SliderPrevButton>
 
             <SliderNextButton
               aria-label="Next slide"
-              className="absolute top-1/2 right-3 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-[#080809]/80 text-white backdrop-blur-sm transition-opacity disabled:opacity-30 sm:right-4"
+              className="absolute top-1/2 right-3 z-10 flex h-9 w-9 max-sm:touch-target max-sm:h-11 max-sm:w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-[#080809]/80 text-white backdrop-blur-sm transition-opacity disabled:opacity-30 sm:right-4"
             >
               <ChevronRight className="h-4 w-4" />
             </SliderNextButton>
