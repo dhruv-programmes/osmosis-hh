@@ -14,13 +14,13 @@ const mentors: ChromaItem[] = [
     borderColor: "#EF4444",
     gradient: "linear-gradient(145deg, #EF4444, #000)",
   },
-  {
-    image: "/assets/mentors/mentor-2.png",
-    title: "Cuy Sheffield",
-    subtitle: "Head of Crypto Visa Labs",
-    borderColor: "#10B981",
-    gradient: "linear-gradient(180deg, #10B981, #000)",
-  },
+  // {
+  //   image: "/assets/mentors/mentor-2.png",
+  //   title: "Cuy Sheffield",
+  //   subtitle: "Head of Crypto Visa Labs",
+  //   borderColor: "#10B981",
+  //   gradient: "linear-gradient(180deg, #10B981, #000)",
+  // },
   {
     image: "/assets/mentors/mentor-3.png",
     title: "James kaplan",
