@@ -2,6 +2,7 @@ import type { MouseEvent } from "react";
 import { Mail } from "lucide-react";
 import { FooterShinyWordmark } from "@/components/ui/footer-shiny-wordmark";
 import { FooterTape } from "@/components/ui/footer-tape";
+import { externalLinkProps, SITE } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 const geist = "font-[family-name:'Geist_Variable',system-ui,sans-serif]";
@@ -55,7 +56,7 @@ export function FooterTapedDesign() {
                 <a className={linkClass} href="#venue">
                   Venue
                 </a>
-                <a className={linkClass} href="#register">
+                <a className={linkClass} {...externalLinkProps(SITE.applyUrl)}>
                   Apply
                 </a>
               </div>

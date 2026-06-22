@@ -49,6 +49,7 @@ function DescriptionCopy({ text }: { text: string }) {
 }
 
 import type { MouseEvent } from "react";
+import { externalLinkProps } from "@/lib/seo";
 import { scrollToSection } from "@/lib/scrollToSection";
 
 function handleSectionLinkClick(
@@ -80,7 +81,7 @@ function TextPanel({
         <DescriptionCopy text={description} />
 
         <a
-          href={href}
+          {...externalLinkProps(href)}
           onClick={(event) => handleSectionLinkClick(event, href)}
           className={cn(
             sans,

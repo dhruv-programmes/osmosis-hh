@@ -3,6 +3,7 @@ import { Menu, X } from "lucide-react";
 import { useState, type MouseEvent } from "react";
 import { spring } from "@/lib/motion";
 import { scrollToSection } from "@/lib/scrollToSection";
+import { SITE } from "@/lib/seo";
 import GlassButton from "./GlassButton";
 
 const links = [
@@ -63,7 +64,7 @@ export default function Navbar() {
           </div>
 
           <div className="relative z-10 flex shrink-0 items-center gap-2 overflow-visible">
-            <GlassButton href="#register" label="Apply" size="nav" className="touch-target" />
+            <GlassButton href={SITE.applyUrl} label="Apply" size="nav" className="touch-target" />
 
             <button
               type="button"

@@ -6,6 +6,7 @@ import Grainient from "../Grainient";
 import Section from "../Section";
 import { registerGrainient } from "../grainientConfig";
 import { gsap } from "@/lib/gsap";
+import { externalLinkProps, SITE } from "@/lib/seo";
 import { spring } from "@/lib/motion";
 
 export default function RegisterCta() {
@@ -47,7 +48,7 @@ export default function RegisterCta() {
           </p>
 
           <motion.a
-            href="mailto:hello@osmosis.dev?subject=Osmosis%20Hacker%20House"
+            {...externalLinkProps(SITE.applyUrl)}
             className="touch-target inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-medium text-neutral-900 sm:w-auto"
             whileHover={{
               scale: 1.04,

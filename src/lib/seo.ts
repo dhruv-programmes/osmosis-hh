@@ -15,7 +15,14 @@ export const SITE = {
   ogImageWidth: 1920,
   ogImageHeight: 1280,
   email: "hello@osmosis.dev",
+  applyUrl: "https://luma.com/u5hrkyxf",
 } as const;
+
+export function externalLinkProps(url: string) {
+  return url.startsWith("http")
+    ? ({ href: url, target: "_blank", rel: "noopener noreferrer" } as const)
+    : ({ href: url } as const);
+}
 
 export const EVENT = {
   name: "Osmosis Hacker House",

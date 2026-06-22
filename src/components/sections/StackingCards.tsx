@@ -1,4 +1,5 @@
 import { media } from "@/lib/breakpoints";
+import { SITE } from "@/lib/seo";
 import { useEffect, useRef, useState, type ComponentType } from "react";
 import { useScroll } from "motion/react";
 import {
@@ -13,7 +14,7 @@ const projects = [
     description:
       "The best projects are rarely built alone.\n\nMeet founders launching startups, engineers building products, designers shaping experiences, and hackers exploring new ideas. Every person in the room is selected for one reason: they're actively creating.",
     cta: "See who's building",
-    href: "#register",
+    href: SITE.applyUrl,
     link: "https://images.unsplash.com/photo-1605106702842-01a887a31122?q=80&w=500&auto=format&fit=crop",
     color: "#5196fd",
   },
@@ -49,7 +50,7 @@ const projects = [
     description:
       "The event ends.\n\nThe relationships don't.\n\nFind future co-founders, teammates, collaborators, and friends among a carefully curated group of builders from across Bangalore's startup ecosystem.",
     cta: "Join the house",
-    href: "#register",
+    href: SITE.applyUrl,
     link: "https://images.unsplash.com/photo-1506792006437-256b665541e2?w=500&auto=format&fit=crop",
     color: "#fd521a",
   },

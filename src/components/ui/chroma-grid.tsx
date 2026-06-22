@@ -25,6 +25,11 @@ export interface ChromaGridProps {
 
 type SetterFn = (v: number | string) => void;
 
+const CHROMA_GREEN = {
+  borderColor: "#81BA2C",
+  gradient: "linear-gradient(145deg, #4A7C1C, #000)",
+} as const;
+
 export default function ChromaGrid({
   items,
   className = "",
@@ -114,9 +119,9 @@ export default function ChromaGrid({
           className="group relative flex h-auto min-h-0 w-full max-w-[300px] max-md:max-w-none cursor-pointer flex-col overflow-hidden rounded-[20px] transition-colors duration-300"
           style={
             {
-              "--card-border": c.borderColor || "transparent",
-              background: c.gradient,
-              "--spotlight-color": "rgba(255,255,255,0.3)",
+              "--card-border": CHROMA_GREEN.borderColor,
+              background: CHROMA_GREEN.gradient,
+              "--spotlight-color": "rgba(168, 217, 90, 0.35)",
             } as CSSProperties
           }
         >

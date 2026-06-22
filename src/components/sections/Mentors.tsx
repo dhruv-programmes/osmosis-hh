@@ -9,24 +9,18 @@ import { media } from "@/lib/breakpoints";
 const mentors: ChromaItem[] = [
   {
     image: "/assets/mentors/mentor-1.png",
-    title: "Mike romoff",
-    subtitle: "EX- CRO , REDDIT",
-    borderColor: "#EF4444",
-    gradient: "linear-gradient(145deg, #EF4444, #000)",
+    title: "Mike Romoff",
+    subtitle: "Prev CRO @ Reddit",
   },
   // {
   //   image: "/assets/mentors/mentor-2.png",
   //   title: "Cuy Sheffield",
   //   subtitle: "Head of Crypto Visa Labs",
-  //   borderColor: "#10B981",
-  //   gradient: "linear-gradient(180deg, #10B981, #000)",
   // },
   {
     image: "/assets/mentors/mentor-3.png",
-    title: "James kaplan",
-    subtitle: "CTO of McKinsey and Co Tech",
-    borderColor: "#3B82F6",
-    gradient: "linear-gradient(145deg, #3B82F6, #000)",
+    title: "James Kaplan",
+    subtitle: "CTO @ McKinsey",
   },
 ];
 

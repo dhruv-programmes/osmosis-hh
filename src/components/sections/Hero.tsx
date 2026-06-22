@@ -7,6 +7,7 @@ import { MorphingText } from "@/components/ui/morphing-text";
 import { heroGrainient } from "../grainientConfig";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { media } from "@/lib/breakpoints";
+import { SITE } from "@/lib/seo";
 
 export default function Hero() {
   const containerRef = useRef<HTMLElement>(null);
@@ -116,7 +117,7 @@ export default function Hero() {
         </h1>
 
         <div ref={ctaRef} className="hero-cta mt-8 sm:mt-10">
-          <GlassButton href="#register" label="Apply" />
+          <GlassButton href={SITE.applyUrl} label="Apply" />
         </div>
       </div>
 

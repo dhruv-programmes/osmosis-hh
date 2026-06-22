@@ -1,4 +1,5 @@
 import { type Colors, Liquid } from "@/components/ui/liquid-gradient";
+import { externalLinkProps } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 
@@ -40,7 +41,7 @@ export default function GlassButton({
 
   return (
     <a
-      href={href}
+      {...externalLinkProps(href)}
       className={cn(
         "group relative inline-block overflow-hidden rounded-lg border border-white/12 bg-[#080809]",
         isNav ? "h-10 w-[5.75rem]" : "h-[2.7em] w-[8.5rem]",
