@@ -20,7 +20,7 @@ const mentors: ChromaItem[] = [
   {
     image: "/assets/mentors/mentor-3.png",
     title: "James Kaplan",
-    subtitle: "CTO @ McKinsey",
+    subtitle: "CTO @ McKinsey and Co Tech",
   },
 ];
 
