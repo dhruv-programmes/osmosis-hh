@@ -1,5 +1,4 @@
 import type { MouseEvent } from "react";
-import { Mail } from "lucide-react";
 import { FooterShinyWordmark } from "@/components/ui/footer-shiny-wordmark";
 import { FooterTape } from "@/components/ui/footer-tape";
 import { externalLinkProps, SITE } from "@/lib/seo";
@@ -73,23 +72,6 @@ export function FooterTapedDesign() {
               </div>
             </div>
 
-            <div className="hidden flex-col gap-4 md:flex">
-              <h4 className="hh-eyebrow whitespace-nowrap">Contact</h4>
-              <div className="flex flex-col items-start gap-2 text-sm">
-                <a
-                  className={linkClass}
-                  href="mailto:hello@osmosis.dev?subject=Osmosis%20Hacker%20House"
-                >
-                  hello@osmosis.dev
-                </a>
-                <a
-                  className={linkClass}
-                  href="mailto:hello@osmosis.dev?subject=Osmosis%20Hacker%20House%20Application"
-                >
-                  Apply via email
-                </a>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -99,29 +81,11 @@ export function FooterTapedDesign() {
           <p className="whitespace-nowrap">
             ©{currentYear} Osmosis Hacker House. All rights reserved.
           </p>
-          <div className="flex flex-row gap-4">
-            <a
-              className="transition-colors hover:text-white"
-              href="mailto:hello@osmosis.dev?subject=Osmosis%20Hacker%20House"
-            >
-              Contact
-            </a>
-            <a
-              className="transition-colors hover:text-white"
-              href="#venue"
-            >
-              Venue
-            </a>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4">
           <a
-            href="mailto:hello@osmosis.dev?subject=Osmosis%20Hacker%20House"
-            aria-label="Email Osmosis Hacker House"
-            className="text-white/55 transition-colors hover:text-white"
+            className="transition-colors hover:text-white"
+            href="#venue"
           >
-            <Mail className="size-5" />
+            Venue
           </a>
         </div>
       </div>

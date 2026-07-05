@@ -14,7 +14,6 @@ export const SITE = {
   ogImage: "/house.png",
   ogImageWidth: 1920,
   ogImageHeight: 1280,
-  email: "hello@osmosis.dev",
   applyUrl: "https://luma.com/u5hrkyxf",
 } as const;
 
@@ -37,7 +36,6 @@ export const EVENT = {
 export const ORGANIZATION = {
   name: "Osmosis",
   logo: `${SITE_URL}/osmosis.png`,
-  email: SITE.email,
 } as const;
 
 export function absoluteUrl(path: string): string {
@@ -71,7 +69,6 @@ export function getEventJsonLd() {
       "@type": "Organization",
       name: ORGANIZATION.name,
       url: SITE.url,
-      email: ORGANIZATION.email,
     },
   };
 }
@@ -83,7 +80,6 @@ export function getOrganizationJsonLd() {
     name: ORGANIZATION.name,
     url: SITE.url,
     logo: ORGANIZATION.logo,
-    email: ORGANIZATION.email,
   };
 }
 
