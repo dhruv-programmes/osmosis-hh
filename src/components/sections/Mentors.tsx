@@ -8,15 +8,10 @@ import { media } from "@/lib/breakpoints";
 
 const mentors: ChromaItem[] = [
   {
-    image: "/assets/mentors/mentor-1.png",
-    title: "Mike Romoff",
-    subtitle: "Prev CRO @ Reddit",
+    image: "/assets/mentors/mentor-2.png",
+    title: "Cuy Sheffield",
+    subtitle: "Head of Crypto Visa Labs",
   },
-  // {
-  //   image: "/assets/mentors/mentor-2.png",
-  //   title: "Cuy Sheffield",
-  //   subtitle: "Head of Crypto Visa Labs",
-  // },
   {
     image: "/assets/mentors/mentor-3.png",
     title: "James Kaplan",
