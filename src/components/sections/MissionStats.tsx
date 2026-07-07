@@ -13,7 +13,7 @@ import CountUp from "@/components/ui/count-up";
 import { cn } from "@/lib/utils";
 
 const stats = [
-  { to: 16, label: "Elite Builders" },
+  { to: 16, label: "Elite Builders", plus: false },
   { to: 5, label: "Tracks And Events" },
   { to: 3, label: "Keynote Speakers" },
   { to: 10, label: "Venture Capitalist" },
@@ -80,7 +80,7 @@ function MissionStatsAnimated({
             {reduceMotion ? (
               <>
                 {stat.to}
-                <span>+</span>
+                {!("plus" in stat) || stat.plus ? <span>+</span> : null}
               </>
             ) : (
               <>
@@ -91,7 +91,7 @@ function MissionStatsAnimated({
                   startWhen={countActive}
                   waitForInView={false}
                 />
-                <span>+</span>
+                {!("plus" in stat) || stat.plus ? <span>+</span> : null}
               </>
             )}
           </p>

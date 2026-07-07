@@ -7,7 +7,7 @@ export const SITE = {
   shortName: "Osmosis",
   title: "Osmosis Hacker House · Whitefield, Bangalore",
   description:
-    "Osmosis Hacker House — July 25–26, 2026 in Whitefield, Bangalore. Two days of building, connecting, and creating.",
+    "Osmosis Hacker House — July 24–26, 2026 in Whitefield, Bangalore. Three days of building, connecting, and creating.",
   url: SITE_URL,
   locale: "en_IN",
   themeColor: "#080809",
@@ -25,8 +25,8 @@ export function externalLinkProps(url: string) {
 
 export const EVENT = {
   name: "Osmosis Hacker House",
-  startDate: "2026-07-25",
-  endDate: "2026-07-26",
+  startDate: "2026-07-24T16:00:00+05:30",
+  endDate: "2026-07-26T22:00:00+05:30",
   locationName: "Zo House",
   addressLocality: "Whitefield",
   addressRegion: "Karnataka",

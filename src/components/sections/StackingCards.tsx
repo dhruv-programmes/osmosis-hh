@@ -30,7 +30,7 @@ const projects = [
   {
     title: "The Experience",
     description:
-      "No stages. No endless presentations.\n\nSpend two days immersed in deep work, spontaneous collaboration, mentorship sessions, and conversations that continue long after midnight.",
+      "No stages. No endless presentations.\n\nSpend three days immersed in deep work, spontaneous collaboration, mentorship sessions, and conversations that continue long after midnight.",
     cta: "Explore the schedule",
     href: "#schedule",
     link: "https://images.unsplash.com/photo-1605106901227-991bd663255c?w=500&auto=format&fit=crop",

@@ -49,11 +49,13 @@ export default function SparklesLogoWall({
   const sparklesHostRef = useRef<HTMLDivElement>(null);
   const [sparklesReady, setSparklesReady] = useState(false);
   const colClass =
-    logos.length === 3
-      ? "grid-cols-2 sm:grid-cols-3"
-      : logos.length <= 4
-        ? "grid-cols-2 sm:grid-cols-4"
-        : "grid-cols-2 sm:grid-cols-3 md:grid-cols-5";
+    logos.length === 2
+      ? "mx-auto max-w-md grid-cols-2 sm:max-w-lg"
+      : logos.length === 3
+        ? "grid-cols-2 sm:grid-cols-3"
+        : logos.length <= 4
+          ? "grid-cols-2 sm:grid-cols-4"
+          : "grid-cols-2 sm:grid-cols-3 md:grid-cols-5";
 
   useEffect(() => {
     if (reduceMotion) return;

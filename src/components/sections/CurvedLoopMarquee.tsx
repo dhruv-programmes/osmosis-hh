@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import CurvedLoop from "@/components/ui/curved-loop";
 
 const MARQUEE_TEXT =
-  "Osmosis Hacker House — Whitefield, Bangalore — July 25–26 — ";
+  "Osmosis Hacker House — Whitefield, Bangalore — July 24–26 — ";
 
 function useCurveAmount() {
   const [curveAmount, setCurveAmount] = useState(88);
@@ -32,7 +32,7 @@ export default function CurvedLoopMarquee() {
       className="relative z-20 overflow-x-clip overflow-y-visible border-y border-white/[0.06] bg-transparent py-2 sm:py-3"
     >
       <p className="sr-only">
-        Osmosis Hacker House, Whitefield Bangalore, July 25–26, 2026
+        Osmosis Hacker House, Whitefield Bangalore, July 24–26, 2026
       </p>
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(129,186,44,0.06),transparent_70%)]" />
 

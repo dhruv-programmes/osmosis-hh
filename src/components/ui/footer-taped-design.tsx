@@ -34,7 +34,7 @@ export function FooterTapedDesign() {
           <div className="flex flex-col items-start gap-2">
             <FooterShinyWordmark onClick={scrollToTop} />
             <p className="hh-body w-full text-white/50 md:w-4/5">
-              48 hours of building, mentorship, and collisions in Whitefield,
+              Three days of building, mentorship, and connecting in Whitefield,
               Bangalore.
             </p>
           </div>
@@ -64,7 +64,7 @@ export function FooterTapedDesign() {
             <div className="hidden flex-col gap-1 md:flex md:gap-4">
               <h4 className="hh-eyebrow whitespace-nowrap">Event</h4>
               <div className="flex flex-col items-start gap-2 text-sm">
-                <span className={linkClass}>July 25–26</span>
+                <span className={linkClass}>July 24–26</span>
                 <span className={linkClass}>Whitefield, Bangalore</span>
                 <a className={linkClass} href="#venue">
                   Zo House

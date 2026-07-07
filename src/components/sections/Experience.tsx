@@ -24,26 +24,45 @@ type ScheduleDay = {
 const scheduleDays: ScheduleDay[] = [
   {
     dayLabel: "Day 1",
-    dateLabel: "July 25",
+    dateLabel: "July 24",
     location: "Whitefield",
     items: [
       {
-        start: "14:00",
-        end: "15:00",
+        start: "16:00",
+        end: "17:00",
         title: "Arrival",
         description: "Land at the house, drop your bag, and find your corner.",
       },
       {
-        start: "16:00",
-        end: "18:00",
+        start: "17:30",
+        end: "19:00",
         title: "Kickoff",
         description: "Opening circle, team formation, and the frame for the weekend.",
       },
       {
-        start: "18:30",
-        end: "21:00",
+        start: "19:30",
+        end: "21:30",
         title: "Evening",
-        description: "Dinner, intros, and the first collisions between builders.",
+        description: "Dinner, intros, and first conversations between builders.",
+      },
+    ],
+  },
+  {
+    dayLabel: "Day 2",
+    dateLabel: "July 25",
+    location: "Whitefield",
+    items: [
+      {
+        start: "09:00",
+        end: "09:30",
+        title: "Standup",
+        description: "A quick pulse across teams before the day gets moving.",
+      },
+      {
+        start: "12:00",
+        end: "13:00",
+        title: "Lunch",
+        description: "Refuel and trade notes around the table.",
       },
       {
         start: "22:00",
@@ -54,7 +73,7 @@ const scheduleDays: ScheduleDay[] = [
     ],
   },
   {
-    dayLabel: "Day 2",
+    dayLabel: "Day 3",
     dateLabel: "July 26",
     location: "Whitefield",
     items: [
@@ -77,10 +96,10 @@ const scheduleDays: ScheduleDay[] = [
         description: "Rehearse, polish, and lock the story you are shipping.",
       },
       {
-        start: "18:00",
-        end: "20:00",
+        start: "19:00",
+        end: "22:00",
         title: "Showcase",
-        description: "Demo to the room. Ship what you built in 48 hours.",
+        description: "Demo to the room. Ship what you built over three days.",
       },
     ],
   },
@@ -229,11 +248,11 @@ export default function Experience() {
         eyebrow="Schedule"
         title={
           <>
-            48 hours can change{" "}
-            <span className="hh-title-accent">your build.</span>
+            From arrival to{" "}
+            <span className="hh-title-accent">showcase.</span>
           </>
         }
-        description="Where builders converge in Whitefield for two days of shipping."
+        description="Where builders converge in Whitefield for three days of shipping."
       />
 
       <div className="mt-10 flex flex-col gap-3 sm:mt-12 sm:gap-4">

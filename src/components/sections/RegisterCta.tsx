@@ -43,7 +43,7 @@ export default function RegisterCta() {
             Grab your <span className="hh-title-accent">pass.</span>
           </h2>
           <p className="hh-body mb-8 text-pretty">
-            Limited spots for builders ready to ship over 48 hours in Whitefield.
+            Limited spots for builders ready to ship over three days in Whitefield.
             Send a short note about what you are building.
           </p>
 
