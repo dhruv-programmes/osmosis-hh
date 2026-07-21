@@ -1,5 +1,5 @@
 import { useGSAP } from "@gsap/react";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import Section from "../Section";
 import SectionHeader from "../SectionHeader";
 import ChromaGrid, { type ChromaItem } from "@/components/ui/chroma-grid";
@@ -8,7 +8,7 @@ import { media } from "@/lib/breakpoints";
 
 const mentors: ChromaItem[] = [
   {
-    image: "/assets/mentors/mentor-2.png",
+    image: "/assets/mentors/mentor-2-upscaled.png",
     title: "Cuy Sheffield",
     subtitle: "Head of Crypto Visa Labs",
   },
@@ -17,28 +17,15 @@ const mentors: ChromaItem[] = [
     title: "James Kaplan",
     subtitle: "CTO @ McKinsey Tech",
   },
+  {
+    image: "/assets/mentors/meet-shah.png",
+    title: "Meet Shah",
+    subtitle: "Co-founder @ Tross",
+  },
 ];
-
-function useSpotlightRadius() {
-  const [radius, setRadius] = useState(280);
-
-  useEffect(() => {
-    const update = () => {
-      const vw = window.innerWidth;
-      setRadius(Math.min(280, Math.max(140, vw * 0.4)));
-    };
-
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
-
-  return radius;
-}
 
 export default function Mentors() {
   const sectionRef = useRef<HTMLElement>(null);
-  const spotlightRadius = useSpotlightRadius();
 
   useGSAP(
     () => {
@@ -80,14 +67,8 @@ export default function Mentors() {
         description="Industry leaders on hand for feedback, direction, and the occasional hard truth."
       />
 
-      <div className="relative">
-        <ChromaGrid
-          items={mentors}
-          radius={spotlightRadius}
-          damping={0.45}
-          fadeOut={0.6}
-          ease="power3.out"
-        />
+      <div className="relative mx-auto w-full max-w-6xl px-1 sm:px-2">
+        <ChromaGrid items={mentors} />
       </div>
     </Section>
   );
