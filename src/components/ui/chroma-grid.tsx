@@ -44,7 +44,7 @@ export default function ChromaGrid({
 
   return (
     <div
-      className={`relative grid w-full grid-cols-2 gap-3 px-2 py-4 sm:gap-4 sm:px-4 sm:py-6 lg:grid-cols-3 ${className}`}
+      className={`relative mx-auto grid w-full max-w-2xl grid-cols-2 gap-3 px-2 py-4 sm:gap-4 sm:px-4 sm:py-6 ${className}`}
     >
       {data.map((c, i) => (
         <article
