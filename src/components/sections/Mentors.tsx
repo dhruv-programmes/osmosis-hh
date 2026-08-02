@@ -17,6 +17,17 @@ const mentors: ChromaItem[] = [
     title: "James Kaplan",
     subtitle: "CTO @ McKinsey Tech",
   },
+  {
+    image: "/assets/mentors/padam-kataria.png",
+    title: "Padam Kataria",
+    subtitle: "Co-founder @ Tross",
+    imagePosition: "left top",
+  },
+  {
+    image: "/assets/mentors/meet-shah.png",
+    title: "Meet Shah",
+    subtitle: "Co-founder @ Tross",
+  },
 ];
 
 export default function Mentors() {

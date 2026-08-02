@@ -9,6 +9,8 @@ export interface ChromaItem {
   borderColor?: string;
   gradient?: string;
   url?: string;
+  /** CSS object-position for the mentor photo (default: top center). */
+  imagePosition?: string;
 }
 
 export interface ChromaGridProps {
@@ -44,7 +46,7 @@ export default function ChromaGrid({
 
   return (
     <div
-      className={`relative mx-auto grid w-full max-w-2xl grid-cols-2 gap-3 px-2 py-4 sm:gap-4 sm:px-4 sm:py-6 ${className}`}
+      className={`relative mx-auto grid w-full max-w-6xl grid-cols-2 gap-3 px-2 py-4 sm:gap-4 sm:px-4 sm:py-6 lg:grid-cols-4 ${className}`}
     >
       {data.map((c, i) => (
         <article
@@ -75,7 +77,8 @@ export default function ChromaGrid({
                 width={400}
                 height={500}
                 loading="lazy"
-                className="h-full w-full object-cover object-top"
+                className="h-full w-full object-cover"
+                style={{ objectPosition: c.imagePosition ?? "center top" }}
               />
             </div>
           </div>
