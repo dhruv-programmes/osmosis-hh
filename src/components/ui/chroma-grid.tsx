@@ -46,14 +46,14 @@ export default function ChromaGrid({
 
   return (
     <div
-      className={`relative mx-auto grid w-full max-w-6xl grid-cols-2 gap-3 px-2 py-4 sm:gap-4 sm:px-4 sm:py-6 lg:grid-cols-4 ${className}`}
+      className={`relative mx-auto flex w-full max-w-6xl flex-wrap justify-center gap-3 px-2 py-4 sm:gap-4 sm:px-4 sm:py-6 ${className}`}
     >
       {data.map((c, i) => (
         <article
           key={i}
           onMouseMove={handleCardMove}
           onClick={() => handleCardClick(c.url)}
-          className="group relative flex h-auto min-h-0 w-full cursor-pointer flex-col overflow-hidden rounded-[20px] transition-colors duration-300"
+          className="group relative flex h-auto min-h-0 w-[calc(50%-0.375rem)] max-w-[17.5rem] cursor-pointer flex-col overflow-hidden rounded-[20px] transition-colors duration-300 sm:w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)]"
           style={
             {
               "--card-border": CHROMA_GREEN.borderColor,

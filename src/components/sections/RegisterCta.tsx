@@ -31,10 +31,13 @@ export default function RegisterCta() {
 
   return (
     <Section id="register" ref={sectionRef}>
-      <div className="cta-panel relative overflow-hidden rounded-2xl border border-white/[0.07]">
-        <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <Grainient {...registerGrainient} className="size-full" />
-          <div className="absolute inset-0 bg-hh-bg/55" />
+      <div className="cta-panel relative isolate overflow-hidden rounded-2xl border border-white/[0.07]">
+        <div
+          className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]"
+          aria-hidden
+        >
+          <Grainient {...registerGrainient} className="size-full rounded-[inherit]" />
+          <div className="absolute inset-0 rounded-[inherit] bg-hh-bg/55" />
         </div>
 
         <div className="cta-content relative z-10 mx-auto max-w-xl px-5 py-10 text-center sm:px-8 sm:py-14 md:py-16">

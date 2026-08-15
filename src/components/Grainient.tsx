@@ -178,6 +178,9 @@ const Grainient: React.FC<GrainientProps> = ({
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     canvas.style.display = 'block';
+    // The canvas is composited on its own layer, which browsers do not clip
+    // against a rounded ancestor, so it has to carry the radius itself.
+    canvas.style.borderRadius = 'inherit';
     container.appendChild(canvas);
 
     const geometry = new Triangle(gl);
